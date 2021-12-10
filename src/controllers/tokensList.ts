@@ -8,6 +8,6 @@ export const TokensController = {
   searchToken: async (req: any, res: any) => {
     const symbol = req.query?.symbol?.toLocaleLowerCase();
     const tokenList = await TokenListServices.getList({ symbol });
-    res.status(200).send({ tokenList });
+    res.status(200).send({ code: 0, data: tokenList });
   },
 };
