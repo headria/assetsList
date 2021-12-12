@@ -21,4 +21,14 @@ export const TokensController = {
       res.status(500).send({});
     }
   },
+  getPriceList1H: async (req: any, res: any) => {
+    try {
+      const symbols = req.query?.symbol?.split(",");
+      const tokenList = await TokenListServices.get1HourPirceList({ symbols });
+      res.status(200).send({ code: 0, message: "", data: tokenList });
+    } catch (error) {
+      LoggerService.error(error);
+      res.status(500).send({});
+    }
+  },
 };

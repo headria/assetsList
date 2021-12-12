@@ -1,11 +1,7 @@
-import { Moralis } from "moralis";
-import cryptoApis from "../thirdparty/cryptoapis";
-import redis from "../thirdparty/redis";
-import {
-  IAssetsDetailsItem,
-  ICryptoApisAssestListDetails,
-} from "../thirdparty/types";
+import { IAssetsDetailsItem } from "../thirdparty/types";
 import tokensList from "./tokenssamples";
+import nomics from "../thirdparty/nomics";
+import { IRawCurrencyTicker } from "nomics";
 
 type TokenDataType = {
   address?: string | null;
@@ -29,5 +25,21 @@ export const TokenListServices = {
 
     return tokens;
   },
-  searchToken: () => {},
+  get1HourPirceList: async ({
+    symbols,
+  }: {
+    symbols?: string[];
+  }): Promise<IRawCurrencyTicker[]> => {
+    console.log({ symbols });
+    return nomics
+      .currenciesTicker({
+        ids: symbols,
+        interval: ["1h"],
+      })
+      .then((x) => x)
+      .catch((x) => {
+        console.log(x);
+        return x;
+      });
+  },
 };
