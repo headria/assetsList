@@ -34,12 +34,12 @@ export const TokenListServices = {
       ids: symbols,
       interval: ["1h"],
     });
-
     let pList: any = [];
     priceList.forEach((x: any) =>
       pList.push({
         symbol: x.symbol,
         name: x.name,
+        logo: x.logo_url,
         price: x.price,
         price_date: x.price_date,
         price_timestamp: x.price_timestamp,
