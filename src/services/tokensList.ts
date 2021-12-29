@@ -35,6 +35,7 @@ export const TokenListServices = {
       interval: ["1h"],
     });
     let pList: any = [];
+    console.log(priceList);
     priceList.forEach((x: any) =>
       pList.push({
         symbol: x.symbol,
