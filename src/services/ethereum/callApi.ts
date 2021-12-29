@@ -64,7 +64,7 @@ export default (chain: EthereumChainName, timeout: number) => {
             return reject(new Error(message));
           }
 
-          resolve(data);
+          resolve(data.result);
         })
         .catch(function (error: any) {
           return reject(new Error(error));
