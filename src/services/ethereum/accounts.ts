@@ -8,7 +8,8 @@ export const getListTransactions = (
   endblock?: string,
   page?: number,
   offset?: number,
-  sort?: string
+  sort?: string,
+  chain: EthereumChainName = "rinkeby"
 ) => {
   const module = "account";
   const action = "txlist";
@@ -44,5 +45,5 @@ export const getListTransactions = (
     address,
   };
 
-  return getRequest("rinkeby")(query);
+  return getRequest(chain)(query);
 };

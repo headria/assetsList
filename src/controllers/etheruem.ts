@@ -11,8 +11,10 @@ export const EthereumController = {
         query?.endblock,
         query?.page,
         query?.offest,
-        query?.sort
+        query?.sort,
+        query?.chain
       );
+
       res.status(200).send({ code: 0, message: "", data: txList });
     } catch (error) {
       LoggerService.error(error);

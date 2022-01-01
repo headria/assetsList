@@ -1,7 +1,13 @@
 const querystring = require("querystring");
 const axios = require("axios");
 
-export type EthereumChainName = "ropsten" | "kovan" | "rinkeby" | "mainnet";
+export type EthereumChainName =
+  | "ropsten"
+  | "kovan"
+  | "rinkeby"
+  | "mainnet"
+  | "mumbai"
+  | "polygon";
 /**
  * @param {string} chain
  * @returns {string}
@@ -14,6 +20,9 @@ function pickChainUrl(chain: EthereumChainName) {
 
   return TESTNET_API_URL_MAP[chain];
 }
+function pickApiKey(chain: EthereumChainName) {
+  return ApiKeys[chain];
+}
 
 const MAIN_API_URL = "https://api.etherscan.io";
 const TESTNET_API_URL_MAP = {
@@ -21,6 +30,16 @@ const TESTNET_API_URL_MAP = {
   kovan: "https://api-kovan.etherscan.io",
   rinkeby: "https://api-rinkeby.etherscan.io",
   mainnet: "https://api.etherscan.io",
+  mumbai: "https://mumbai.polygonscan.com",
+  polygon: "https://polygonscan.com",
+};
+const ApiKeys = {
+  ropsten: "3GND43EEVWQFZ9GSZVSSMV68PUIPJKDD8D",
+  kovan: "3GND43EEVWQFZ9GSZVSSMV68PUIPJKDD8D",
+  rinkeby: "3GND43EEVWQFZ9GSZVSSMV68PUIPJKDD8D",
+  mainnet: "3GND43EEVWQFZ9GSZVSSMV68PUIPJKDD8D",
+  mumbai: "PNIPM91AZ6B8CWNSIUHGNBC8S31THZGGVK",
+  polygon: "PNIPM91AZ6B8CWNSIUHGNBC8S31THZGGVK",
 };
 
 export default (chain: EthereumChainName, timeout: number) => {
@@ -28,7 +47,7 @@ export default (chain: EthereumChainName, timeout: number) => {
     baseURL: pickChainUrl(chain),
     timeout: timeout,
   });
-  const apiKey = "3GND43EEVWQFZ9GSZVSSMV68PUIPJKDD8D";
+  const apiKey = pickApiKey(chain);
 
   /**
    * @param query
