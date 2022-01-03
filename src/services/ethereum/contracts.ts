@@ -1,44 +1,35 @@
-import callApi, { EthereumChainName } from "./callApi";
+import Web3 from "web3";
+import { AbiItem } from "web3-utils";
+import { LoggerService } from "../../logger";
 
-const getRequest = (chain: EthereumChainName) => callApi(chain, 1000);
+const provider =
+  "https://eth.getblock.io/rinkeby/?api_key=2e89aac7-4985-4684-9547-fd4956bbd784";
 
-export const getListTransactions = (
-  address: string,
-  chain: EthereumChainName = "rinkeby"
-) => {
-  const module = "account";
-  const action = "txlist";
+const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
 
-  if (!startblock) {
-    startblock = 0;
+// The minimum ABI required to get the ERC20 Token balance
+const minABI: AbiItem[] = [
+  {
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
+    type: "function",
+  },
+];
+
+export const getBalanceERC20 = async (
+  contractAddress: string,
+  walletAddress: string
+): Promise<string | undefined> => {
+  try {
+    const contract = new Web3Client.eth.Contract(minABI, contractAddress);
+    const result = await contract.methods.balanceOf(walletAddress).call();
+
+    const format = Web3Client.utils.fromWei(result);
+
+    return format;
+  } catch (e) {
+    LoggerService.error(e);
   }
-
-  if (!endblock) {
-    endblock = "latest";
-  }
-
-  if (!page) {
-    page = 1;
-  }
-
-  if (!offset) {
-    offset = 100;
-  }
-
-  if (!sort) {
-    sort = "asc";
-  }
-
-  var query = {
-    module,
-    action,
-    startblock,
-    endblock,
-    page,
-    offset,
-    sort,
-    address,
-  };
-
-  return getRequest(chain)(query);
 };
