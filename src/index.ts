@@ -3,8 +3,6 @@ import helmet from "helmet";
 import { createServer } from "http";
 import { LoggerService } from "./logger";
 import routes from "./routes";
-import * as config from "./config";
-import Moralis from "moralis/node";
 
 const bodyParser = require("body-parser");
 const compression = require("compression");
@@ -26,15 +24,6 @@ async function run() {
   // start HTTP server
   const httpServer = createServer(app);
 
-  LoggerService.info(config);
-  Moralis.initialize(config.MoralisApplicationId);
-
-  Moralis.start({
-    appId: config.MoralisApplicationId,
-    serverUrl: config.MoralisServerUrl,
-    moralisSecret: config.MoralisApiSecret,
-    masterKey: config.MoralisApiKey,
-  });
   httpServer.listen(PORT, () => {
     LoggerService.info(`🚀 Server ready at http://localhost:${PORT}`);
   });

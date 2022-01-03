@@ -36,7 +36,6 @@
     "helmet": "^4.6.0",
     "http": "^0.0.1-security",
     "ioredis": "^4.28.2",
-    "moralis": "^0.0.147",
     "nodemon": "^2.0.15",
     "nomics": "^0.5.7",
     "querystring": "^0.2.1",
