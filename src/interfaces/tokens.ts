@@ -1,6 +1,7 @@
 export interface ITokenContract {
   name: string;
   blockchain: string;
+  network?: string;
   nomicsId?: string;
 
   symbol: string;
