@@ -4,6 +4,7 @@ const router = Router();
 
 router.get("/getList", TokensController.getList);
 router.get("/getPriceList1H", TokensController.getPriceList1H);
+router.get("/getsupported", TokensController.getSupprotedTokens);
 router.get("/searchToken", TokensController.searchToken);
 router.get("/ethereum/getlisttx", EthereumController.getAllTx);
 export default router;

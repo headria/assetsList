@@ -1,19 +1,8 @@
 import { IAssetsDetailsItem } from "../thirdparty/types";
 import tokensList from "./tokenssamples";
 import nomics from "../thirdparty/nomics";
-import { IRawCurrencyTicker } from "nomics";
-
-type TokenDataType = {
-  address?: string | null;
-  name?: string | null;
-  symbol?: string | null;
-  decimals?: string | null;
-  logo?: string | null;
-  logo_hash?: string | null;
-  thumbnail?: string | null;
-  block_number?: string | null;
-  validated?: number | null;
-};
+import { supportedTokens } from "../tokens/supportedTokens";
+import { ITokenContract } from "../interfaces/tokens";
 
 export const TokenListServices = {
   getList: async ({ symbol }: { symbol?: string }) => {
@@ -35,7 +24,6 @@ export const TokenListServices = {
       interval: ["1h"],
     });
     let pList: any = [];
-    console.log(priceList);
     priceList.forEach((x: any) =>
       pList.push({
         symbol: x.symbol,
@@ -58,5 +46,8 @@ export const TokenListServices = {
     );
 
     return pList;
+  },
+  getSupportedToken: async (): Promise<ITokenContract[]> => {
+    return supportedTokens;
   },
 };

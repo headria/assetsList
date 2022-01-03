@@ -31,4 +31,14 @@ export const TokensController = {
       res.status(500).send({});
     }
   },
+  getSupprotedTokens: async (req: any, res: any) => {
+    try {
+      const symbols = req.query?.symbol?.split(",");
+      const tokenList = await TokenListServices.getSupportedToken();
+      res.status(200).send({ code: 0, message: "", data: tokenList });
+    } catch (error) {
+      LoggerService.error(error);
+      res.status(500).send({});
+    }
+  },
 };
