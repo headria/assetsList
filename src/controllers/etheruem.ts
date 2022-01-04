@@ -1,3 +1,4 @@
+import xXssProtection from "helmet/dist/middlewares/x-xss-protection";
 import { LoggerService } from "../logger";
 import { EtherService } from "../services";
 export const EthereumController = {
@@ -10,11 +11,16 @@ export const EthereumController = {
         query?.startblock,
         query?.endblock,
         query?.page,
-        query?.offest,
+        query?.offest || 100,
         query?.sort,
         query?.chain
       );
 
+      if (query?.contractAddress) {
+        txList.filter((x: any) => x.contractAddress === query.contractAddress);
+      } else {
+        txList.filter((x: any) => x.contractAddress === "");
+      }
       res.status(200).send({ code: 0, message: "", data: txList });
     } catch (error) {
       LoggerService.error(error);

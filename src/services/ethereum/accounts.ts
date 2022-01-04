@@ -10,7 +10,7 @@ export const getListTransactions = (
   offset?: number,
   sort?: string,
   chain: EthereumChainName = "rinkeby"
-) => {
+): Promise<any> => {
   const module = "account";
   const action = "txlist";
 
