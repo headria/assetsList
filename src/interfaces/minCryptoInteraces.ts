@@ -22,3 +22,15 @@ export interface IHistoryDataParams {
   kind: KindHistoryType;
   symbol: string;
 }
+
+export interface IHistoryData {
+  time: string;
+  close: string;
+  high: string;
+  low: string;
+  open: string;
+  volumefrom: 13911829.75;
+  volumeto: 71699053.35;
+  conversionType: "direct";
+  conversionSymbol: "";
+}

@@ -5,6 +5,7 @@ import { supportedTokens } from "../tokens/supportedTokens";
 import { ITokenContract } from "../interfaces/tokens";
 import { ITokenInfo } from "../interfaces/tokenInfo";
 import {
+  IHistoryData,
   IHistoryDataParams,
   IHistoryParams,
   KindHistoryType,
@@ -116,11 +117,18 @@ export const TokenListServices = {
         tsym: "usdt",
         tryConversion: false,
       };
-      const chartData = await minCryptoAxois.get(
+      const request = await minCryptoAxois.get(
         getHistory.service + "?" + generateMinCryptoQuery(queryParams)
       );
-      if (chartData.status === 200) return chartData.data?.Data?.Data;
-      else return [];
+
+      if (request.status === 200) {
+        const chartData: IHistoryData[] = request.data?.Data?.Data;
+
+        return chartData.map((data) => ({
+          time: data.time,
+          price: data.close,
+        }));
+      } else return [];
     } catch (e) {
       LoggerService.error(e);
       return [];
