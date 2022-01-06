@@ -51,4 +51,14 @@ export const TokensController = {
       res.status(500).send({});
     }
   },
+  getChartData: async (req: any, res: any) => {
+    try {
+      const query = req.query;
+      const chartData = await TokenListServices.getChartData({ ...query });
+      res.status(200).send({ code: 0, message: "", data: chartData });
+    } catch (error) {
+      LoggerService.error(error);
+      res.status(500).send({});
+    }
+  },
 };

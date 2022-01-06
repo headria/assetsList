@@ -4,6 +4,16 @@ import nomics, { generateQuery, nomicsAxios } from "../thirdparty/nomics";
 import { supportedTokens } from "../tokens/supportedTokens";
 import { ITokenContract } from "../interfaces/tokens";
 import { ITokenInfo } from "../interfaces/tokenInfo";
+import {
+  IHistoryDataParams,
+  IHistoryParams,
+  KindHistoryType,
+} from "../interfaces/minCryptoInteraces";
+import {
+  generateMinCryptoQuery,
+  minCryptoAxois,
+} from "../thirdparty/minCryptoApis";
+import { LoggerService } from "../logger";
 
 export const TokenListServices = {
   getList: async ({ symbol }: { symbol?: string }) => {
@@ -95,6 +105,77 @@ export const TokenListServices = {
 
     return symbolInfo;
   },
+  getChartData: async (params: IHistoryDataParams): Promise<any> => {
+    try {
+      const getHistory = getLimitHistory(params.kind);
+      const queryParams: IHistoryParams = {
+        aggregate: 1,
+        e: "CCCAGG",
+        fsym: params.symbol,
+        limit: getHistory.limit,
+        tsym: "usdt",
+        tryConversion: false,
+      };
+      const chartData = await minCryptoAxois.get(
+        getHistory.service + "?" + generateMinCryptoQuery(queryParams)
+      );
+      if (chartData.status === 200) return chartData.data?.Data?.Data;
+      else return [];
+    } catch (e) {
+      LoggerService.error(e);
+      return [];
+    }
+  },
 };
 
-const getIconUrl = () => {};
+const getLimitHistory = (kind: KindHistoryType) => {
+  switch (kind) {
+    case "24H":
+      return {
+        service: "histohour",
+        limit: 24,
+      };
+
+    case "7D":
+      return {
+        service: "histoday",
+        limit: 7,
+      };
+
+    case "30D":
+      return {
+        service: "histoday",
+        limit: 30,
+      };
+
+    case "60D":
+      return {
+        service: "histoday",
+        limit: 60,
+      };
+
+    case "180D":
+      return {
+        service: "histoday",
+        limit: 180,
+      };
+
+    case "90D":
+      return {
+        service: "histoday",
+        limit: 90,
+      };
+
+    case "365D":
+      return {
+        service: "histoday",
+        limit: 365,
+      };
+
+    default:
+      return {
+        service: "",
+        limit: 10,
+      };
+  }
+};

@@ -3,7 +3,7 @@ export interface ITokenContract {
   blockchain: string;
   network?: string;
   nomicsId?: string;
-
+  coinType?: number;
   symbol: string;
   contractAddress: string;
   logo?: string;
