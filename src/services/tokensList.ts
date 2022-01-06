@@ -124,7 +124,10 @@ export const TokenListServices = {
       if (request.status === 200) {
         const chartData: IHistoryData[] = request.data?.Data?.Data;
 
-        return chartData.map((data) => ({
+        const sortedData: IHistoryData[] = chartData.sort(
+          (a: IHistoryData, b: IHistoryData) => b.time - a.time
+        );
+        return sortedData.map((data) => ({
           time: data.time,
           price: data.close,
         }));

@@ -24,7 +24,7 @@ export interface IHistoryDataParams {
 }
 
 export interface IHistoryData {
-  time: string;
+  time: number;
   close: string;
   high: string;
   low: string;
