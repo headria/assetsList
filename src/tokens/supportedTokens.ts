@@ -7,7 +7,6 @@ export const supportedTokens: ITokenContract[] = [
     nomicsId: "USDT",
     network: "TRC20",
     blockchain: "TRON",
-
     name: "Tether USD (USDT)",
     logo: "https://coin.top/production/logo/usdtlogo.png",
     owner: "THPvaUhoh2Qn2y9THCZML3H815hhFhn5YC",

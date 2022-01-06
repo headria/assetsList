@@ -55,7 +55,6 @@ export default (chain: EthereumChainName, timeout: number) => {
    */
   const getRequest = (query: object) => {
     const q2 = querystring.stringify({ ...query, apiKey });
-    console.log(q2);
     return new Promise(function (resolve, reject) {
       client
         .get("/api?" + q2)
