@@ -1,3 +1,3 @@
-import * as balance from "./balance";
+import * as bitcoinServices from "./services";
 
-export { balance };
+export { bitcoinServices };

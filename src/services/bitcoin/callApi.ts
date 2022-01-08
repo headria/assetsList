@@ -1,7 +1,7 @@
 const querystring = require("querystring");
 const axios = require("axios");
 
-export default (service: string, timeout: number = 1000) => {
+export default (service: string, timeout: number = 30000) => {
   var client = axios.create({
     baseURL: "https://blockchain.info/",
     timeout: timeout,
@@ -14,15 +14,15 @@ export default (service: string, timeout: number = 1000) => {
   const getRequest = (query?: object) => {
     let q2 = "";
     if (query) q2 = "?" + querystring.stringify({ ...query });
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       client
         .get(service + q2)
-        .then(function (response: any) {
+        .then((response: any) => {
           var data = response.data;
 
           resolve(data);
         })
-        .catch(function (error: any) {
+        .catch((error: any) => {
           return reject(new Error(error));
         });
     });
