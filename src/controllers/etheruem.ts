@@ -1,4 +1,3 @@
-import xXssProtection from "helmet/dist/middlewares/x-xss-protection";
 import { LoggerService } from "../logger";
 import { EtherService } from "../services";
 export const EthereumController = {
