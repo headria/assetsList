@@ -11,7 +11,7 @@ const tokenApi = "4f1652bce3864b0198ccf41b1242efce";
 
 export default (service: string, timeout: number = 30000) => {
   var client = axios.create({
-    baseURL: urls["mainnet"],
+    baseURL: urls["testnet"],
     timeout: timeout,
   });
 
