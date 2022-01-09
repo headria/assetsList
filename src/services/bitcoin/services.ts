@@ -1,18 +1,33 @@
 import getReuqest from "./callApi";
 
 export const getBalance = async (address: string): Promise<number> => {
-  const request: any = await getReuqest(`q/addressbalance/${address}`)({
-    confirmations: 6,
-  });
-  return Number.parseFloat(request);
+  try {
+    const request: any = await getReuqest(`addrs/${address}`)();
+    return Number.parseFloat(request?.balance || 0);
+  } catch {
+    return 0;
+  }
 };
 
 export const getTransactionsList = async (address: string): Promise<any> => {
-  const request: any = await getReuqest(`rawaddr/${address}`)({ limit: 10 });
-  return request;
+  try {
+    const request: any = await getReuqest(`addrs/${address}/full`)({
+      limit: 10,
+    });
+    return request;
+  } catch {
+    return 0;
+  }
 };
 
 export const getUTXOs = async (address: string): Promise<any> => {
-  const request: any = await getReuqest(`unspent`)({ active: address });
-  return request;
+  try {
+    const request: any = await getReuqest(`addrs/${address}`)({
+      unspentOnly: true,
+      includeScript: true,
+    });
+    return request;
+  } catch {
+    return 0;
+  }
 };
