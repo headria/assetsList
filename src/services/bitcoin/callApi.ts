@@ -5,13 +5,14 @@ const axios = require("axios");
 
 const urls = {
   testnet: "https://api.blockcypher.com/v1/btc/test3/",
+  testnet2: "https://api.blockcypher.com/v1/byc/test3/",
   mainnet: "https://api.blockcypher.com/v1/btc/main/",
 };
 const tokenApi = "4f1652bce3864b0198ccf41b1242efce";
 
 export default (service: string, timeout: number = 30000) => {
   var client = axios.create({
-    baseURL: urls["testnet"],
+    baseURL: urls["testnet2"],
     timeout: timeout,
   });
 
