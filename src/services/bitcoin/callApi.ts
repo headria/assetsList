@@ -5,7 +5,7 @@ const axios = require("axios");
 
 const urls = {
   testnet: "https://api.blockcypher.com/v1/btc/test3/",
-  testnet2: "https://api.blockcypher.com/v1/byc/test3/",
+  testnet2: "https://api.blockcypher.com/v1/bcy/test/",
   mainnet: "https://api.blockcypher.com/v1/btc/main/",
 };
 const tokenApi = "4f1652bce3864b0198ccf41b1242efce";
