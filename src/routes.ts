@@ -2,6 +2,7 @@ import {
   TokensController,
   EthereumController,
   BitcoinController,
+  SmartchainController,
 } from "./controllers";
 import { Router } from "express";
 const router = Router();
@@ -17,4 +18,5 @@ router.get("/bitcoin/trxlist", BitcoinController.getTrxLists);
 router.get("/bitcoin/getutxos", BitcoinController.getUTXOs);
 router.get("/ethereum/getlisttx", EthereumController.getAllTx);
 router.get("/ethereum/balanceoferc20", EthereumController.getBalanceERC20);
+router.get("/smartchain/balanceofbep20", SmartchainController.getBalanceBEP20);
 export default router;
