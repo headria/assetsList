@@ -1,5 +1,5 @@
 import { LoggerService } from "../logger";
-import { EtherService, SmartchainService } from "../services";
+import { SmartchainService } from "../services";
 export const SmartchainController = {
   getAllTx: async (req: any, res: any) => {
     try {
