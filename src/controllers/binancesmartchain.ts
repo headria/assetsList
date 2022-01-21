@@ -12,6 +12,7 @@ export const SmartchainController = {
         query?.page,
         query?.offest || 100,
         query?.sort,
+        query.contractAddress,
         query?.chain
       );
 
