@@ -17,6 +17,7 @@ export const EthereumController = {
         query.contractAddress,
         query?.chain
       );
+      txList = txList.filter((x: any) => x.value !== "0");
 
       res.status(200).send({ code: 0, message: "", data: txList });
     } catch (error) {

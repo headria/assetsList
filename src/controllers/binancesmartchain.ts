@@ -5,7 +5,8 @@ export const SmartchainController = {
     try {
       const query = req.query;
 
-      const txList = await SmartchainService.accounts.getListTransactions(
+      let txList = [];
+      txList = await SmartchainService.accounts.getListTransactions(
         query?.address,
         query?.startblock,
         query?.endblock,
@@ -16,11 +17,8 @@ export const SmartchainController = {
         query?.chain
       );
 
-      if (query?.contractAddress) {
-        txList.filter((x: any) => x.contractAddress === query.contractAddress);
-      } else {
-        txList.filter((x: any) => x.contractAddress === "");
-      }
+      txList = txList.filter((x: any) => x.value !== "0");
+
       res.status(200).send({ code: 0, message: "", data: txList });
     } catch (error) {
       LoggerService.error(error);
