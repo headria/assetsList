@@ -9,10 +9,11 @@ export const getListTransactions = (
   page?: number,
   offset?: number,
   sort?: string,
+  contractAddress?: string,
   chain: EthereumChainName = "rinkeby"
 ): Promise<any> => {
   const module = "account";
-  const action = "txlist";
+  const action = contractAddress ? "tokentx" : "txlist";
 
   if (!startblock) {
     startblock = 0;
@@ -31,7 +32,7 @@ export const getListTransactions = (
   }
 
   if (!sort) {
-    sort = "asc";
+    sort = "desc";
   }
 
   var query = {
@@ -43,6 +44,7 @@ export const getListTransactions = (
     offset,
     sort,
     address,
+    contractaddress: contractAddress,
   };
 
   return getRequest(chain)(query);
