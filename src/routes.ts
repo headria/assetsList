@@ -19,4 +19,5 @@ router.get("/bitcoin/getutxos", BitcoinController.getUTXOs);
 router.get("/ethereum/getlisttx", EthereumController.getAllTx);
 router.get("/ethereum/balanceoferc20", EthereumController.getBalanceERC20);
 router.get("/smartchain/balanceofbep20", SmartchainController.getBalanceBEP20);
+router.get("/smartchain/getlisttx", SmartchainController.getAllTx);
 export default router;
