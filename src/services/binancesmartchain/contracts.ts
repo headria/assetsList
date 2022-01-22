@@ -3,7 +3,7 @@ import { AbiItem } from "web3-utils";
 import { LoggerService } from "../../logger";
 
 const provider =
-  "https://bsc.getblock.io/mainnet/?api_key=2e89aac7-4985-4684-9547-fd4956bbd784";
+  "https://bsc.getblock.io/testnet/?api_key=2e89aac7-4985-4684-9547-fd4956bbd784";
 
 const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
 
