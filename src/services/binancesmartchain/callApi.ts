@@ -46,6 +46,8 @@ export default (chain: EthereumChainName, timeout: number) => {
         .get("/api?" + q2)
         .then(function (response: any) {
           var data = response.data;
+          if (data?.result && typeof data.result !== "string")
+            return resolve(data.result);
 
           if (data.status && data.status != 1) {
             let returnMessage = data.message || "NOTOK";
