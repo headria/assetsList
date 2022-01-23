@@ -1,6 +1,6 @@
 import callApi, { EthereumChainName } from "./callApi";
 
-const getRequest = (chain: EthereumChainName) => callApi(chain, 1000);
+const getRequest = (chain: EthereumChainName) => callApi(chain, 30000);
 
 export const getListTransactions = (
   address: string,

@@ -21,6 +21,7 @@ export const EthereumController = {
 
       res.status(200).send({ code: 0, message: "", data: txList });
     } catch (error) {
+      console.log(error);
       LoggerService.error(error);
       res.status(500).send({});
     }
