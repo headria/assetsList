@@ -26,4 +26,5 @@ router.get("/smartchain/getlisttx", SmartchainController.getAllTx);
 router.get("/arabcoin/getprice", ArabCoinController.getPrice);
 router.delete("/notifications/remove", NofiticationService.removeDevice);
 router.post("/notifications/new", NofiticationService.addNewDevice);
+router.get("/notifications/status", NofiticationService.checkStatusNotif);
 export default router;

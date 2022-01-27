@@ -45,4 +45,20 @@ export const NofiticationService = {
       return res.status(500).send({});
     }
   },
+  checkStatusNotif: async (req: any, res: any) => {
+    try {
+      const id = req.query?.id;
+      const getDevices = await DevicesService.getDevices({
+        dId: id,
+      });
+      let isExites = false;
+
+      if (getDevices?.length > 0) isExites = true;
+
+      return res.status(200).send({ code: 0, message: "", data: isExites });
+    } catch (e: any) {
+      LoggerService.error(e.toString());
+      return res.status(500).send({});
+    }
+  },
 };
