@@ -3,11 +3,21 @@ import helmet from "helmet";
 import { createServer } from "http";
 import { LoggerService } from "./logger";
 import routes from "./routes";
+const mongoose = require("./database");
 
 const bodyParser = require("body-parser");
 const compression = require("compression");
 const cors = require("cors");
 require("dotenv").config();
+
+//mongoose
+{
+  mongoose.init(function (err: any, db: any) {
+    if (err) {
+      LoggerService.error(err.message);
+    }
+  });
+}
 
 async function run() {
   const app = express();

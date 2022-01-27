@@ -10,6 +10,7 @@ const nomics = new Nomics({
 
 export const nomicsAxios = axios.create({
   baseURL: "https://api.nomics.com/v1/",
+  timeout: 30000,
 });
 
 export const generateQuery = (query: object) => {

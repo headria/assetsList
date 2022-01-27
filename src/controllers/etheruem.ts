@@ -41,4 +41,13 @@ export const EthereumController = {
       res.status(500).send({});
     }
   },
+  watchAccount: async (req: any, res: any) => {
+    try {
+      console.log();
+      res.status(200).send({ code: 0, message: "" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({});
+    }
+  },
 };

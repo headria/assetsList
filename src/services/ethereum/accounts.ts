@@ -49,3 +49,27 @@ export const getListTransactions = (
 
   return getRequest(chain)(query);
 };
+
+export const watchAccount = async (address: string) => {
+  const txList: any[] = await getListTransactions(
+    address,
+    undefined,
+    undefined,
+    1,
+    10
+  );
+
+  // query the database to check last transaction
+  let expectedAddress: string[] = [];
+
+  const checkIfExits = (trx: any): boolean => {
+    let index: number = expectedAddress.findIndex(
+      (a) => a === trx.from || a === trx.to
+    );
+
+    return index > -1 ? true : false;
+  };
+  const newList: any[] = txList.filter((trx) => checkIfExits(trx));
+  if (newList.length > 0) {
+  }
+};
