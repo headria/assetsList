@@ -2,7 +2,7 @@ import e from "express";
 import { Networks } from "../interfaces/devices";
 import { LoggerService } from "../logger";
 import { AddressesService, DevicesService } from "../services";
-import { NotificationService } from "../services/firebase";
+import { NotificationService } from "../services/notifications";
 
 export const NofiticationController = {
   addNewDevice: async (req: any, res: any) => {

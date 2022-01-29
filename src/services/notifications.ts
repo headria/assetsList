@@ -25,12 +25,10 @@ export const NotificationService = {
           ...bodyData,
         },
       };
-      console.log(payload, "==========");
-      let token = [mob_token];
 
       const result = await admin
         .messaging()
-        .sendToDevice(token, payload, options);
+        .sendToDevice(mob_token, payload, options);
 
       console.log(result);
       if (result.successCount === 1)
