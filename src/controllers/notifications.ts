@@ -2,8 +2,9 @@ import e from "express";
 import { Networks } from "../interfaces/devices";
 import { LoggerService } from "../logger";
 import { AddressesService, DevicesService } from "../services";
+import { NotificationService } from "../services/firebase";
 
-export const NofiticationService = {
+export const NofiticationController = {
   addNewDevice: async (req: any, res: any) => {
     try {
       const body: any = req.body;
@@ -60,5 +61,30 @@ export const NofiticationService = {
       LoggerService.error(e.toString());
       return res.status(500).send({});
     }
+  },
+  sendNotifTest: async (req: any, res: any) => {
+    const body = req.query;
+    if (!body?.token)
+      return res.status(400).send({ code: 1, message: "Token is required" });
+
+    const sendNotifResult = await NotificationService.sendNotification(
+      "Test Notif",
+      body?.token
+    );
+    if (sendNotifResult.status)
+      return res.status(200).send({
+        code: 0,
+        message: "",
+        data: "The notification was sent.",
+      });
+
+    if (sendNotifResult?.message)
+      return res.status(400).send({
+        code: 0,
+        message: sendNotifResult?.message,
+        data: "",
+      });
+
+    return res.status(500).send({});
   },
 };

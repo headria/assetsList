@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "arab-wallet",
+  "private_key_id": "d8335d145af5149a9ece0b03863efd8e80c79b63",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCoLZrN0A+kgMtJ\n64U+foG3qob4TgtvjVVCr/FogXMlhJAju38cCjTaZOVF/bg4zoHfRXS0MhFz8RZk\nSUyYoxErTc1uj8Jl4TdjeH2sYCdf1HQJfhwmkUPzWTP5WgRvmWYxRWCEX1vX85mB\n96kNdp824OU1NPDx933FakIdnftj2VEKrFzOjuSL5yyxtuawnAfIolfjZNtiJJwb\nS8DnuILBUE1bdAMmVM80O2Ejw+aGXQnKE3djDEqpMNGRj0kLCGb4k5EjG7oq9C9V\nXfd0BBiAhtz/DIvRhuFBTBy5dlJ8GgZv0m/1Waj8XyRWnLnkqovHk1okhA62l1PX\nJTcp6MHrAgMBAAECggEAD1zbH0yPoT9X/VCpGKRbGnlWtagAyMKTCfHN46CvnBBt\nT6ujrjQLJUgXiY/mcYoBDcbnz5jN71a+l4/6kew+Ipk2LZCu+WTcDRdx+M/FHlk8\noFayIPPJeUP/c2+9p/7N+azqEYLZ052fuuJHbGtsRTRrZl4yWb158mav03TIWhPX\nYrIkYTN72FVemW0HVDLD9fkfM/hYkgC+ZVZxNZo5CY+QMRLfKfV7hqPwXXDeKLgr\nGzDGA4LEp2A8fCT/29Lq0f7ortIlvT0+DEOBIGxJcQpz5Z/2JVCRbNIymH2ztbcv\nhdX8IBYonC4Y+hvLlWMBPCMpCN4PSNEsZpgVvazQwQKBgQDPvQhlkg3Dh9949o11\nOkR6b8gC/lUynoi/gpRySjn7ffS+CClqSetIeoT72wgCrbHBgvAyVWUGZeRerJPP\n3i/v8sYjPDFCuQC4x8gJUzXJQr3B0vD4bcvyZ14YnjBwWFDT/MGo05WdOvlTAGq+\n8TYGxNPymMOZYjKsW6odw1IL3QKBgQDPP8cDS3LF+DuhxAPlCZSqgeowTROvKdav\nS09fbtKgpPFSZ8zPgN/iWB/qwXC0HQuW0NXntOdYWs7ZcwBu/b763FXPYbhwoSV/\nCn9ZfdoWy9DgjpRmzkpS9+EKmvmlGdr9cDUR56BTCfoQ199oBz4vhibWcKauR3zy\no4rDoYwsZwKBgG1QNXjtMBzyBKAsbSeAr8QVyhP5LW/jiGXuGptBf91c3EqbFN//\nYbXT8uJs0XxHVkBT3H0//lctisxe17EMZAFJqQWliO5pV33kctilVqo/WocBrxeq\n/yThS9x8cVTMxEuot2dVX2dLPyN0Fre/SgSp0jXYOSUfTTbxTUU4IJZpAoGAQ6oJ\n+txmQ5ZxObZ6owvGuwihglWX6KebTS4kYv8Wy5Yup/3104W7EvY8rXOsrVGSWBIk\n1Hqu0Z0MTdiLOrGj6dmINqYsBrHGQT0XKQu66ZhvwPEsKIiPoZkGo2THvwy6/+Xj\nnc3m/VWTjG4+pYM/3VpKUdcDxIDYnYuhoY+b6V8CgYEAjdFNalM6TDMpyoF+h96U\n8UkeE7GmrtKRZOtSDGS+BahrszudJCgY2bxkUuzbJTclnl5hShvoO13/nNgGqtdi\nXRVRRZo8QoGxULbzxZLNA7iXFHB1mTt9iU6YZr49sR9WFoW2/pwUWqDCkUSIdRUa\nz3SIHknh8uXHf8fJiNVrt1Y=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-pbun8@arab-wallet.iam.gserviceaccount.com",
+  "client_id": "105099136262609569228",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-pbun8%40arab-wallet.iam.gserviceaccount.com"
+}

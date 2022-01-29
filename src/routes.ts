@@ -4,7 +4,7 @@ import {
   BitcoinController,
   SmartchainController,
   ArabCoinController,
-  NofiticationService,
+  NofiticationController,
 } from "./controllers";
 import { Router } from "express";
 const router = Router();
@@ -24,9 +24,10 @@ router.get("/ethereum/balanceoferc20", EthereumController.getBalanceERC20);
 router.get("/smartchain/balanceofbep20", SmartchainController.getBalanceBEP20);
 router.get("/smartchain/getlisttx", SmartchainController.getAllTx);
 router.get("/arabcoin/getprice", ArabCoinController.getPrice);
-router.delete("/notifications/remove", NofiticationService.removeDevice);
-router.post("/notifications/new", NofiticationService.addNewDevice);
-router.get("/notifications/status", NofiticationService.checkStatusNotif);
+router.delete("/notifications/remove", NofiticationController.removeDevice);
+router.get("/notifications/sendtest", NofiticationController.sendNotifTest);
+router.post("/notifications/new", NofiticationController.addNewDevice);
+router.get("/notifications/status", NofiticationController.checkStatusNotif);
 router.get("/arabcoin/getprice", ArabCoinController.getPrice);
 router.post("/arabcoin/buy", ArabCoinController.newRequest);
 router.get("/arabcoin/checkamount", ArabCoinController.checkAmount);
