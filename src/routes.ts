@@ -27,4 +27,13 @@ router.get("/arabcoin/getprice", ArabCoinController.getPrice);
 router.delete("/notifications/remove", NofiticationService.removeDevice);
 router.post("/notifications/new", NofiticationService.addNewDevice);
 router.get("/notifications/status", NofiticationService.checkStatusNotif);
+router.get("/arabcoin/getprice", ArabCoinController.getPrice);
+router.post("/arabcoin/buy", ArabCoinController.newRequest);
+router.get("/arabcoin/checkamount", ArabCoinController.checkAmount);
+router.get(
+  "/arabcoin/getbalanceperaccount",
+  ArabCoinController.getTotalBalancePerAccount
+);
+router.get("/arabcoin/gettotalbalance", ArabCoinController.getTotalBalance);
+
 export default router;
