@@ -8,8 +8,8 @@ export const NotificationService = {
   ): Promise<{ status: boolean; message?: string }> => {
     try {
       const bodyData = {
-        from: "0x55140c7Fd926Ef5fC9467aBe40Af73eD60B2d991",
-        to: "0x55140c7Fd926Ef5fC9467aBe40Af73eD60B2d991",
+        from_address: "0x55140c7Fd926Ef5fC9467aBe40Af73eD60B2d991",
+        to_address: "0x55140c7Fd926Ef5fC9467aBe40Af73eD60B2d991",
         value: "1",
         type: "send",
         netwrokFee: "15",
@@ -20,10 +20,7 @@ export const NotificationService = {
         date: "1643482719000",
       };
       let payload: MessagingPayload = {
-        notification: {
-          title,
-          ...bodyData,
-        },
+        data: bodyData,
       };
 
       const result = await admin
