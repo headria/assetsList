@@ -47,24 +47,13 @@ export const ArabCoinService = {
     message: string;
   }> => {
     try {
-      const checkAmount = await ArabCoinService.checkAmount(
-        payloads.balance_arb
-      );
-      if (checkAmount) {
-        await new ArabCoinModel({ ...payloads, status: "New" }).save();
-        return {
-          message: "",
-          success: true,
-        };
-      } else {
-        return {
-          message: "The pre-sale is done",
-          success: false,
-        };
-      }
+      await new ArabCoinModel({ ...payloads, status: "New" }).save();
+      return {
+        message: "",
+        success: true,
+      };
     } catch (e: any) {
       LoggerService.error(e.toString());
-
       return {
         message: "There was problem occured on the server.",
         success: false,
