@@ -107,11 +107,20 @@ export const ArabCoinService = {
       return 0;
     }
   },
-  getBalancePerAddress: async (address: string): Promise<Number> => {
+  getBalancePerAddress: async (address: string | string[]): Promise<Number> => {
     try {
+      let searchAddress: string[] = [];
+      if (typeof address === "string") {
+        // check for valid address
+        if (address.length < 5) return 0;
+        searchAddress = [address];
+      }
+      if (Array.isArray(address)) {
+        searchAddress = address;
+      }
       const sumArabBalance: TotalBalanceArab[] = await ArabCoinModel.aggregate([
         {
-          $match: { status: "Success", from: address },
+          $match: { status: "Success", from: { $in: searchAddress } },
         },
         {
           $group: {
