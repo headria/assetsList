@@ -1,5 +1,8 @@
-import IoRedis from "ioredis";
+import IORedis, { Redis } from "ioredis";
+import { LoggerService } from "../logger";
 
-const redis = new IoRedis();
+let redis: Redis = new IORedis({
+  maxRetriesPerRequest: 4,
+});
 
 export default redis;

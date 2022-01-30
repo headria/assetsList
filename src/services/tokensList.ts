@@ -15,6 +15,7 @@ import {
   minCryptoAxois,
 } from "../thirdparty/minCryptoApis";
 import { LoggerService } from "../logger";
+import { getCachedData, cacheData } from "../utils";
 
 export const TokenListServices = {
   getList: async ({ symbol }: { symbol?: string }) => {
@@ -31,12 +32,23 @@ export const TokenListServices = {
   }: {
     symbols?: string[];
   }): Promise<any[]> => {
-    const priceList = await nomics.currenciesTicker({
-      ids: symbols,
-      interval: ["1h"],
-    });
+    let priceListData: any = [];
+    let keySymbols: string = symbols?.join(",") || "";
+    const cachData = await getCachedData(keySymbols);
+
+    if (cachData?.cached) priceListData = cachData.payload;
+
+    if (!cachData?.cached) {
+      priceListData = await nomics.currenciesTicker({
+        ids: symbols,
+        interval: ["1h"],
+      });
+
+      await cacheData(keySymbols, JSON.stringify(priceListData), 300);
+    }
+
     let pList: ITokenInfo[] = [];
-    priceList.forEach((x: any) =>
+    priceListData.forEach((x: any) =>
       pList.push({
         symbol: x.symbol === "SAND" ? "SAND2" : x.symbol,
         name: x.name,
@@ -63,46 +75,56 @@ export const TokenListServices = {
     return supportedTokens;
   },
   getCoinInfo: async (symbol: string): Promise<ITokenInfo> => {
-    const priceInfo: any = await nomics.currenciesTicker({
-      ids: [symbol],
-      interval: ["1h"],
-    });
     let symbolInfo: ITokenInfo = {};
-    if (priceInfo?.length > 0) {
-      symbolInfo = {
-        price: priceInfo[0].price,
-        price_date: priceInfo[0].price_date,
-        price_timestamp: priceInfo[0].price_timestamp,
-        circulating_supply: priceInfo[0].circulating_supply,
-        max_supply: priceInfo[0].max_supply,
-        market_cap: priceInfo[0].market_cap,
-        volume: priceInfo[0]["1h"]?.volume,
-        price_change: priceInfo[0]["1h"]?.price_change,
-        price_change_pct: priceInfo[0]["1h"]?.price_change_pct,
-        volume_change: priceInfo[0]["1h"]?.volume_change,
-        volume_change_pct: priceInfo[0]["1h"]?.volume_change_pct,
-        market_cap_change: priceInfo[0]["1h"]?.market_cap_change,
-        market_cap_change_pct: priceInfo[0]["1h"]?.market_cap_change_pct,
-      };
-    }
+    let keySymbolCacheData: string = `symbolData-${symbol}`;
+    const cachData = await getCachedData(keySymbolCacheData);
+    if (cachData?.cached) symbolInfo = cachData.payload as ITokenInfo;
 
-    const query = {
-      ids: symbol,
-      attributes: "description,name,original_symbol,website_url",
-    };
-    await nomicsAxios.get("currencies?" + generateQuery(query)).then((res) => {
-      if (res?.status === 200) {
-        const d = res.data[0];
+    if (!cachData?.cached) {
+      let symbolInfoData: any = {};
+      symbolInfoData = await nomics.currenciesTicker({
+        ids: [symbol],
+        interval: ["1h"],
+      });
+      if (symbolInfoData?.length > 0) {
         symbolInfo = {
-          ...symbolInfo,
-          symbol: d.original_symbol === "SAND" ? "SAND2" : d.original_symbol,
-          name: d.name,
-          description: d.description,
-          website_url: d.website_url,
-          coinmarketcapUrl: `https://coinmarketcap.com/currencies/${d.name}/`,
+          price: symbolInfoData[0].price,
+          price_date: symbolInfoData[0].price_date,
+          price_timestamp: symbolInfoData[0].price_timestamp,
+          circulating_supply: symbolInfoData[0].circulating_supply,
+          max_supply: symbolInfoData[0].max_supply,
+          market_cap: symbolInfoData[0].market_cap,
+          volume: symbolInfoData[0]["1h"]?.volume,
+          price_change: symbolInfoData[0]["1h"]?.price_change,
+          price_change_pct: symbolInfoData[0]["1h"]?.price_change_pct,
+          volume_change: symbolInfoData[0]["1h"]?.volume_change,
+          volume_change_pct: symbolInfoData[0]["1h"]?.volume_change_pct,
+          market_cap_change: symbolInfoData[0]["1h"]?.market_cap_change,
+          market_cap_change_pct: symbolInfoData[0]["1h"]?.market_cap_change_pct,
         };
       }
-    });
+      const query = {
+        ids: symbol,
+        attributes: "description,name,original_symbol,website_url",
+      };
+      await nomicsAxios
+        .get("currencies?" + generateQuery(query))
+        .then((res) => {
+          if (res?.status === 200) {
+            const d = res.data[0];
+            symbolInfo = {
+              ...symbolInfo,
+              symbol:
+                d.original_symbol === "SAND" ? "SAND2" : d.original_symbol,
+              name: d.name,
+              description: d.description,
+              website_url: d.website_url,
+              coinmarketcapUrl: `https://coinmarketcap.com/currencies/${d.name}/`,
+            };
+          }
+        });
+      await cacheData(keySymbolCacheData, JSON.stringify(symbolInfo), 300);
+    }
 
     return symbolInfo;
   },
