@@ -21,6 +21,7 @@ export const NofiticationController = {
           addresses: item.addresses,
           blockchain: item.name,
           dId: body.id,
+          fcm_token: body.token,
         })
       );
 

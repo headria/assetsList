@@ -17,6 +17,7 @@ export const AddressesService = {
               dID: payloads.dId,
               addresses: payloads.addresses,
               blockchain: payloads.blockchain,
+              fcm_token: payloads.fcm_token,
             },
           },
           {
@@ -29,6 +30,7 @@ export const AddressesService = {
           dID: payloads.dId,
           addresses: payloads.addresses,
           blockchain: payloads.blockchain,
+          fcm_token: payloads.fcm_token,
         }).save();
 
         return true;
