@@ -8,6 +8,32 @@ import nomics from "../thirdparty/nomics";
  * TODO - Get balance for addresses
  * TODO - Get Pirce per network
  */
+
+const addressesBlockchain = {
+  btc: "bc1qfhndl48dpng7vlwltmyq7ulnggk68nzcjkcj5z",
+  eth: "0x55140c7Fd926Ef5fC9467aBe40Af73eD60B2d991",
+  xrp: "rKR5sSa7k3mgi3vTUQLbW6wfCmZj3csHzg",
+  near: "1e350eb8eb9c24deec11c12affca191cfa012d76ec0c6eed6c0e0bd03e3941ee",
+  tron: "TNXiVevk6C7iynPn2qCTBLL1YEykxgCZGj",
+  bnb: "bnb1ptpgywkgg6ekwsev6t2tm328hgq6j5c7ejt66j",
+};
+const ethNetworks = [
+  "eth",
+  "matic",
+  "smartchain",
+  "sand",
+  "usdt",
+  "mana",
+  "busd",
+];
+const selectNetworkAddress = (symbol: string) => {
+  const network = symbol.toLocaleLowerCase();
+  if (ethNetworks.findIndex((s) => s === network) > -1) {
+    return addressesBlockchain.eth;
+  }
+
+  return addressesBlockchain[network];
+};
 export const ArabCoinService = {
   getPrice: async (
     symbol: string
@@ -15,6 +41,7 @@ export const ArabCoinService = {
     arabCoin: number;
     coinPrice: number;
     coinPricePerArabCoin: number;
+    networkAddress?: string;
   }> => {
     try {
       const priceList = await nomics.currenciesTicker({
@@ -30,6 +57,7 @@ export const ArabCoinService = {
         arabCoin: arabCoinPrice,
         coinPrice,
         coinPricePerArabCoin,
+        networkAddress: selectNetworkAddress(symbol),
       };
     } catch (e: any) {
       LoggerService.error(e.toString());
