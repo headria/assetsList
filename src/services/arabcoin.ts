@@ -98,7 +98,7 @@ export const ArabCoinService = {
         {
           $group: {
             _id: {},
-            totalAmount: { $sum: "$balance_arb" },
+            totalAmount: { $sum: "$amount_arb" },
           },
         },
       ]);
@@ -122,7 +122,7 @@ export const ArabCoinService = {
         {
           $group: {
             _id: {},
-            totalAmount: { $sum: "$balance_arb" },
+            totalAmount: { $sum: "$amount_arb" },
           },
         },
       ]);
@@ -153,10 +153,12 @@ export const ArabCoinService = {
         {
           $group: {
             _id: {},
-            totalAmount: { $sum: "$balance_arb" },
+            totalAmount: { $sum: "$amount_arb" },
           },
         },
       ]);
+      console.log(sumArabBalance);
+      console.log(searchAddress);
 
       return sumArabBalance.length > 0
         ? Number(sumArabBalance[0].totalAmount) || 0
