@@ -5,8 +5,8 @@ export interface ArabCoinDTO extends Document {
   from: string;
   to: string;
   network: string;
-  balance_network: string;
-  balance_arb: number;
+  amount_network: string;
+  amount_arb: number;
   hash: string;
   status: string;
 }
@@ -30,11 +30,11 @@ const arabCoin = new Schema(
       trim: true,
       index: true,
     },
-    balance_network: {
+    amount_network: {
       type: String,
       trim: true,
     },
-    balance_arb: {
+    amount_arb: {
       type: Number,
       trim: true,
     },

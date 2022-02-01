@@ -2,8 +2,8 @@ export type ArabCoin = {
   from: string;
   to: string;
   network: string;
-  balance_network: string;
-  balance_arb: number;
+  amount_network: string;
+  amount_arb: number;
   hash: string;
 };
 

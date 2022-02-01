@@ -22,6 +22,34 @@ export const ArabCoinController = {
         message: "Hash is required",
       });
 
+    if (!body?.amount_arb)
+      return res.status(400).send({
+        code: 400,
+        message: "amount_arb is required",
+      });
+    if (!body?.amount_network)
+      return res.status(400).send({
+        code: 400,
+        message: "amount_network is required",
+      });
+
+    if (!body?.from)
+      return res.status(400).send({
+        code: 400,
+        message: "from is required",
+      });
+    if (!body?.to)
+      return res.status(400).send({
+        code: 400,
+        message: "to is required",
+      });
+
+    if (!body?.network)
+      return res.status(400).send({
+        code: 400,
+        message: "network is required",
+      });
+
     const statusCheck = await ArabCoinService.addNewRequest(body);
     return res.status(200).send({ code: 0, message: "", data: statusCheck });
   },
