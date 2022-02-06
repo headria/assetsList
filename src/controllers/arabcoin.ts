@@ -63,6 +63,13 @@ export const ArabCoinController = {
     const statusCheck = await ArabCoinService.getBalancePerAddress(
       address?.split(",") || ""
     );
-    return res.status(200).send({ code: 0, message: "", data: statusCheck });
+    return res.status(200).send({
+      code: 0,
+      message: "",
+      data: {
+        balance: statusCheck,
+        price: 0.035,
+      },
+    });
   },
 };

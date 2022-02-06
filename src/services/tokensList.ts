@@ -68,24 +68,7 @@ export const TokenListServices = {
         market_cap_change_pct: x["1h"]?.market_cap_change_pct,
       })
     );
-    pList.push({
-      symbol: "Arabcoin",
-      name: "Arabcoin",
-      logo: "",
-      price: "0.035",
-      price_date: "",
-      price_timestamp: "",
-      circulating_supply: "",
-      max_supply: "",
-      market_cap: "",
-      volume: "0",
-      price_change: "0",
-      price_change_pct: "0",
-      volume_change: "0",
-      volume_change_pct: "0",
-      market_cap_change: "0",
-      market_cap_change_pct: "0",
-    });
+
     return pList;
   },
   getSupportedToken: async (): Promise<ITokenContract[]> => {
