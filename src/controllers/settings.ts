@@ -1,6 +1,6 @@
 export const SettingsController = {
   checkForUpdate: async (req: any, res: any) => {
-    const version: number = req.qeury.version;
+    const version: number = req.query.version;
 
     if (version === 2) {
       return res.status(200).send({
