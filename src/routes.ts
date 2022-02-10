@@ -16,7 +16,7 @@ router.get("/getsupported", TokensController.getSupprotedTokens);
 router.get("/tokeninfo", TokensController.getTokenInfo);
 router.get("/chartdata", TokensController.getChartData);
 router.get("/searchToken", TokensController.searchToken);
-router.get("/seetings/checkforforceupdate", SettingsController.checkForUpdate);
+router.get("/settings/checkforforceupdate", SettingsController.checkForUpdate);
 router.get("/bitcoin/balance", BitcoinController.getBalance);
 router.get("/bitcoin/trxlist", BitcoinController.getTrxLists);
 router.get("/bitcoin/getutxos", BitcoinController.getUTXOs);
