@@ -1,5 +1,5 @@
 export const SettingsController = {
-  checkForUpdate: async (res, req) => {
+  checkForUpdate: async (req: any, res: any) => {
     return res.status(200).send({
       code: 0,
       message: "",
