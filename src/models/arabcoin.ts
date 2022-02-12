@@ -9,6 +9,7 @@ export interface ArabCoinDTO extends Document {
   amount_arb: number;
   hash: string;
   status: string;
+  check_count: number;
 }
 
 const arabCoin = new Schema(
@@ -29,6 +30,10 @@ const arabCoin = new Schema(
       type: String,
       trim: true,
       index: true,
+    },
+    check_count: {
+      type: Number,
+      required: true,
     },
     amount_network: {
       type: String,

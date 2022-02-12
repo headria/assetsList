@@ -1,4 +1,9 @@
-import { ArabCoin, TotalBalanceArab } from "../interfaces/arabcoin";
+import {
+  ArabCoin,
+  TotalBalanceArab,
+  TransactionStatus,
+  transactionTypeStatus,
+} from "../interfaces/arabcoin";
 import { LoggerService } from "../logger";
 import ArabCoinModel, { ArabCoinDTO } from "../models/arabcoin";
 import nomics from "../thirdparty/nomics";
@@ -25,6 +30,7 @@ const ethNetworks: string[] = [
   "usdt",
   "mana",
   "busd",
+  "tron",
 ];
 const selectNetworkAddress = (symbol: string) => {
   const network: string = symbol.toLocaleLowerCase();
@@ -75,7 +81,11 @@ export const ArabCoinService = {
     message: string;
   }> => {
     try {
-      await new ArabCoinModel({ ...payloads, status: "New" }).save();
+      await new ArabCoinModel({
+        ...payloads,
+        status: transactionTypeStatus["new"],
+        check_count: 0,
+      }).save();
       return {
         message: "",
         success: true,
@@ -102,10 +112,15 @@ export const ArabCoinService = {
           },
         },
       ]);
+
+      const newAmount = await ArabCoinService.getUnConfirmedAmount();
       const totalAmount: number = 300000000;
 
       const diff: number =
-        totalAmount - (convertedAmount + (Number(sumArabBalance) || 0));
+        totalAmount -
+        (convertedAmount +
+          newAmount +
+          (Number(sumArabBalance[0]?.totalAmount) || 0));
       if (diff >= 0) return true;
       else return false;
     } catch (e: any) {
@@ -117,7 +132,7 @@ export const ArabCoinService = {
     try {
       const sumArabBalance: TotalBalanceArab[] = await ArabCoinModel.aggregate([
         {
-          $match: { status: "Success" },
+          $match: { status: transactionTypeStatus["success"] },
         },
         {
           $group: {
@@ -148,7 +163,10 @@ export const ArabCoinService = {
       }
       const sumArabBalance: TotalBalanceArab[] = await ArabCoinModel.aggregate([
         {
-          $match: { status: "Success", from: { $in: searchAddress } },
+          $match: {
+            status: transactionTypeStatus["success"],
+            from: { $in: searchAddress },
+          },
         },
         {
           $group: {
@@ -157,8 +175,6 @@ export const ArabCoinService = {
           },
         },
       ]);
-      console.log(sumArabBalance);
-      console.log(searchAddress);
 
       return sumArabBalance.length > 0
         ? Number(sumArabBalance[0].totalAmount) || 0
@@ -166,6 +182,116 @@ export const ArabCoinService = {
     } catch (e: any) {
       LoggerService.error(e.toString());
       return 0;
+    }
+  },
+  getUnConfirmedAmount: async (): Promise<number> => {
+    try {
+      const sumArabBalance = await ArabCoinModel.aggregate([
+        {
+          $match: {
+            status: transactionTypeStatus.new,
+            check_count: { $lt: 4 },
+          },
+        },
+        {
+          $group: {
+            _id: {},
+            totalAmount: { $sum: "$amount_arb" },
+          },
+        },
+      ]);
+
+      return Number(sumArabBalance[0]?.totalAmount);
+    } catch (e: any) {
+      LoggerService.error(e.toString());
+      return 0;
+    }
+  },
+  getUnconfirmedTransactions: async (network: string): Promise<ArabCoin[]> => {
+    const trxs = await ArabCoinService.getTransactions(
+      network,
+      "new",
+      "pending"
+    );
+    return trxs;
+  },
+  getTransactions: async (
+    network: string,
+    transactionStatus: TransactionStatus,
+    transactionStatus2?: TransactionStatus
+  ): Promise<ArabCoin[]> => {
+    try {
+      let filterData: any = {
+        network,
+        status: transactionTypeStatus[transactionStatus],
+      };
+      if (transactionStatus2) {
+        filterData = {
+          network,
+          $or: [{ status: transactionStatus }, { status: transactionStatus2 }],
+        };
+      }
+
+      const trxs = await ArabCoinModel.find(filterData);
+
+      const trxList: ArabCoin[] = trxs.map((tr) => ({
+        from: tr.from,
+        to: tr.to,
+        network: tr.network,
+        amount_network: tr.amount_network,
+        amount_arb: tr.amount_arb,
+        hash: tr.hash,
+        check_count: tr.check_count,
+      }));
+      return trxList;
+    } catch (e: any) {
+      LoggerService.error(`[getTransactions] err:${e.toString()}`);
+      return [];
+    }
+  },
+  updateTransactionStatus: async (
+    hash: string,
+    checkValidation: boolean,
+    check_count: number
+  ): Promise<boolean> => {
+    try {
+      let update: any = {};
+
+      if (checkValidation) {
+        update = {
+          $set: {
+            status: transactionTypeStatus["success"],
+          },
+        };
+      }
+      if (!checkValidation && check_count!! > 3) {
+        update = {
+          $set: {
+            status: transactionTypeStatus["failed"],
+            check_count: check_count + 1,
+          },
+        };
+      }
+
+      if (!checkValidation && check_count!! < 4) {
+        update = {
+          $set: {
+            status: transactionTypeStatus["pending"],
+            check_count: check_count + 1,
+          },
+        };
+      }
+      await ArabCoinModel.findOneAndUpdate(
+        {
+          hash,
+        },
+        update
+      );
+
+      return true;
+    } catch (e: any) {
+      LoggerService.error(`[updateTransactionStatus] err:${e.toString()}`);
+      return false;
     }
   },
 };
