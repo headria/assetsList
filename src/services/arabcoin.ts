@@ -124,7 +124,7 @@ export const ArabCoinService = {
       if (diff >= 0) return true;
       else return false;
     } catch (e: any) {
-      LoggerService.error(e.toString());
+      LoggerService.error(`[checkAmount] err:${e.toString()}`);
       return false;
     }
   },
@@ -201,7 +201,7 @@ export const ArabCoinService = {
         },
       ]);
 
-      return Number(sumArabBalance[0]?.totalAmount);
+      return Number(sumArabBalance[0]?.totalAmount || 0);
     } catch (e: any) {
       LoggerService.error(e.toString());
       return 0;
