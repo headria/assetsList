@@ -51,6 +51,12 @@ export const validateTransaction = async (
   reason: string;
 }> => {
   try {
+    if (tr.from.toLowerCase() === tr.to.toLowerCase()) {
+      return {
+        status: false,
+        reason: "From and to address are same",
+      };
+    }
     const request: any = await getReuqest(`txs/${tr.hash}`)();
 
     const data: TrxResult = request as TrxResult;

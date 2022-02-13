@@ -1,12 +1,15 @@
+import { DevicesService } from ".";
 import {
   ArabCoin,
   TotalBalanceArab,
   TransactionStatus,
   transactionTypeStatus,
 } from "../interfaces/arabcoin";
+import { BodyNotification } from "../interfaces/notification";
 import { LoggerService } from "../logger";
 import ArabCoinModel, { ArabCoinDTO } from "../models/arabcoin";
 import nomics from "../thirdparty/nomics";
+import { NotificationService } from "./notifications";
 
 /**
  * TODO - write function that check transactions and then update the database.
@@ -246,6 +249,7 @@ export const ArabCoinService = {
         amount_arb: tr.amount_arb,
         hash: tr.hash,
         check_count: tr.check_count,
+        createdAt: tr.createdAt,
       }));
       return trxList;
     } catch (e: any) {
@@ -295,6 +299,29 @@ export const ArabCoinService = {
         { ...update }
       );
 
+      return true;
+    } catch (e: any) {
+      LoggerService.error(`[updateTransactionStatus] err:${e.toString()}`);
+      return false;
+    }
+  },
+  sendArabCoinNotification: async (tr: ArabCoin): Promise<boolean> => {
+    try {
+      const notificationBody: BodyNotification = {
+        blcokchain: tr.network,
+        date: tr.createdAt?.getTime().toString(),
+        from_address: tr.from,
+        to_address: tr.to,
+        hash: tr.hash,
+        netwrokFee: "0",
+        nonce: "0",
+        status: "success",
+        type: "recieve",
+        value: tr.amount_arb.toString(),
+      };
+
+      // const device = await DevicesService.getDevices({dId:tr.from})
+      // await NotificationService.sendNotification()
       return true;
     } catch (e: any) {
       LoggerService.error(`[updateTransactionStatus] err:${e.toString()}`);

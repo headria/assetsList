@@ -78,6 +78,12 @@ export const validateTransaction = async (
   reason: string;
 }> => {
   try {
+    if (tr.from.toLowerCase() === tr.to.toLowerCase()) {
+      return {
+        status: false,
+        reason: "From and to address are same",
+      };
+    }
     console.log(`Network ${network.toUpperCase()} is Activited`);
     const getUrls = getNetworkUrl(
       network,

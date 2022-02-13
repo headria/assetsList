@@ -30,6 +30,7 @@ export const convertToUnit = (
 
     return (Number(value) / poweredTen).toString();
   }
+
   return "0";
 };
 

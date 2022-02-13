@@ -11,6 +11,7 @@ export interface ArabCoinDTO extends Document {
   status: string;
   check_count: number;
   rejected_reasons?: string;
+  createdAt?: Date;
 }
 
 const arabCoin = new Schema(
