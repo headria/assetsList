@@ -26,7 +26,7 @@ require("dotenv").config();
 }
 async function run() {
   const app = express();
-  const PORT = process.env.PORT || 5006;
+  const PORT = process.env.PORT || 5005;
 
   // standard express middlewares
   app.use(helmet());
