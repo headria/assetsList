@@ -18,12 +18,12 @@ import { NotificationService } from "./notifications";
  */
 
 const addressesBlockchain: any = {
-  btc: "bc1qfhndl48dpng7vlwltmyq7ulnggk68nzcjkcj5z",
-  eth: "0x55140c7Fd926Ef5fC9467aBe40Af73eD60B2d991",
-  xrp: "rKR5sSa7k3mgi3vTUQLbW6wfCmZj3csHzg",
-  near: "1e350eb8eb9c24deec11c12affca191cfa012d76ec0c6eed6c0e0bd03e3941ee",
-  tron: "TNXiVevk6C7iynPn2qCTBLL1YEykxgCZGj",
-  bnb: "bnb1ptpgywkgg6ekwsev6t2tm328hgq6j5c7ejt66j",
+  btc: "bc1qwc7pp0gwq3d5m9cmd6qwd5m5xulhws7kjrra6s",
+  eth: "0xf5e6626464125228080227f2329F76CcB0BEaB0e",
+  xrp: "rETBegDXj8VGEMt5mVKipwSzKn3D8rmyfm",
+  near: "bbba32ddfcac2b345824d2ba39e274eafeadb10aee4b058f466757bf10205b73",
+  trx: "TWkpbRMiuinWgY313omfcLE3BEb89cfjda",
+  bnb: "bnb1uprd3rtcltadhjz24f3eefct4a3v54zryasvkk",
 };
 const ethNetworks: string[] = [
   "eth",
@@ -33,7 +33,6 @@ const ethNetworks: string[] = [
   "usdt",
   "mana",
   "busd",
-  "tron",
 ];
 const selectNetworkAddress = (symbol: string) => {
   const network: string = symbol.toLocaleLowerCase();
@@ -69,7 +68,7 @@ export const ArabCoinService = {
         networkAddress: selectNetworkAddress(symbol),
       };
     } catch (e: any) {
-      LoggerService.error(e.toString());
+      LoggerService.error(`[arabservice-getPrice] err:${e.toString()}`);
       return {
         arabCoin: 0,
         coinPrice: 0,
