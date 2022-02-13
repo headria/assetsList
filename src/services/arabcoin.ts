@@ -228,11 +228,15 @@ export const ArabCoinService = {
       if (transactionStatus2) {
         filterData = {
           network,
-          $or: [{ status: transactionStatus }, { status: transactionStatus2 }],
+          $or: [
+            { status: transactionTypeStatus[transactionStatus] },
+            { status: transactionTypeStatus[transactionStatus2] },
+          ],
         };
       }
 
-      const trxs = await ArabCoinModel.find(filterData);
+      console.log(filterData);
+      const trxs = await ArabCoinModel.find({ ...filterData });
 
       const trxList: ArabCoin[] = trxs.map((tr) => ({
         from: tr.from,
@@ -252,6 +256,7 @@ export const ArabCoinService = {
   updateTransactionStatus: async (
     hash: string,
     checkValidation: boolean,
+    reason: string,
     check_count: number
   ): Promise<boolean> => {
     try {
@@ -269,6 +274,7 @@ export const ArabCoinService = {
           $set: {
             status: transactionTypeStatus["failed"],
             check_count: check_count + 1,
+            rejected_reasons: reason,
           },
         };
       }
@@ -278,6 +284,7 @@ export const ArabCoinService = {
           $set: {
             status: transactionTypeStatus["pending"],
             check_count: check_count + 1,
+            rejected_reasons: reason,
           },
         };
       }
@@ -285,7 +292,7 @@ export const ArabCoinService = {
         {
           hash,
         },
-        update
+        { ...update }
       );
 
       return true;

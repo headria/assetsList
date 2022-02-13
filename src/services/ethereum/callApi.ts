@@ -1,5 +1,7 @@
-const querystring = require("querystring");
-const axios = require("axios");
+import { RPCBody, RPCResult } from "../../interfaces/RPC";
+import axios, { AxiosResponse } from "axios";
+import querystring from "querystring";
+import { LoggerService } from "../../logger";
 
 export type EthereumChainName =
   | "ropsten"
@@ -7,7 +9,9 @@ export type EthereumChainName =
   | "rinkeby"
   | "mainnet"
   | "mumbai"
-  | "polygon";
+  | "polygon"
+  | "bsctestnet"
+  | "bscmainnet";
 /**
  * @param {string} chain
  * @returns {string}
@@ -32,6 +36,8 @@ const TESTNET_API_URL_MAP = {
   mainnet: "https://api.etherscan.io",
   mumbai: "https://mumbai.polygonscan.com",
   polygon: "https://polygonscan.com",
+  bsctestnet: "https://api-testnet.bscscan.com",
+  bscmainnet: "https://api.bscscan.com/api",
 };
 const ApiKeys = {
   ropsten: "3GND43EEVWQFZ9GSZVSSMV68PUIPJKDD8D",
@@ -40,6 +46,8 @@ const ApiKeys = {
   mainnet: "3GND43EEVWQFZ9GSZVSSMV68PUIPJKDD8D",
   mumbai: "PNIPM91AZ6B8CWNSIUHGNBC8S31THZGGVK",
   polygon: "PNIPM91AZ6B8CWNSIUHGNBC8S31THZGGVK",
+  bsctestnet: "1ZCF7UITDGJ46YU2H6KD7P4RWP5H57FM3J",
+  bscmainnet: "1ZCF7UITDGJ46YU2H6KD7P4RWP5H57FM3J",
 };
 
 export default (chain: EthereumChainName, timeout: number) => {
@@ -93,4 +101,27 @@ export default (chain: EthereumChainName, timeout: number) => {
   };
 
   return getRequest;
+};
+
+const blockIOApiKey = "2e89aac7-4985-4684-9547-fd4956bbd784";
+export const RPCApiCall = async <A>(url: string, body: RPCBody): Promise<A> => {
+  const client = axios.create({
+    baseURL: url,
+    timeout: 30000,
+  });
+  const q2 = querystring.stringify({ api_key: blockIOApiKey });
+
+  console.log(url);
+  return new Promise<A>((resolve, reject) => {
+    client
+      .post("", body)
+      .then((res: AxiosResponse<A>) => {
+        if (res.status === 200) return resolve(res.data);
+        return reject(null);
+      })
+      .catch((err: any) => {
+        LoggerService.error(`[RPCApiCall] err: ${err.toString()}`);
+        return reject(null);
+      });
+  });
 };

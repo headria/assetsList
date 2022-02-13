@@ -6,6 +6,7 @@ export type ArabCoin = {
   amount_arb: number;
   hash: string;
   check_count?: number;
+  rejected_reasons?: string;
 };
 
 export type TotalBalanceArab = { totalAmount: number; _id: object };
@@ -17,9 +18,11 @@ export type TotalBalanceArab = { totalAmount: number; _id: object };
  * pending for transaction those are check under 4 time
  */
 export type TransactionStatus = "new" | "success" | "failed" | "pending";
+
 export type TransactionTypes = {
   [A in TransactionStatus]: "New" | "Success" | "Failed" | "Pending";
 };
+export type ETHNetworkTypes = "ETH" | "BSC" | "MATIC";
 
 export const transactionTypeStatus: TransactionTypes = {
   new: "New",

@@ -3,6 +3,8 @@ import helmet from "helmet";
 import { createServer } from "http";
 import { LoggerService } from "./logger";
 import routes from "./routes";
+import * as cronService from "./cronjobs";
+
 const mongoose = require("./database");
 
 const bodyParser = require("body-parser");
@@ -19,9 +21,12 @@ require("dotenv").config();
   });
 }
 
+{
+  cronService.cronJobs();
+}
 async function run() {
   const app = express();
-  const PORT = process.env.PORT || 5005;
+  const PORT = process.env.PORT || 5006;
 
   // standard express middlewares
   app.use(helmet());

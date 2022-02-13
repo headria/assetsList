@@ -23,18 +23,17 @@ export default (service: string, timeout: number = 30000) => {
   const getRequest = (query?: object) => {
     let q2 = "";
     if (query) q2 = "?" + querystring.stringify({ ...query, token: tokenApi });
-    console.log(service + q2);
+    console.log(urls["mainnet"] + service + q2);
     return new Promise((resolve, reject) => {
       client
         .get(service + q2)
         .then((response: any) => {
-          var data = response.data;
-
-          resolve(data);
+          if (response.status === 200) return resolve(response.data);
+          return reject(null);
         })
         .catch((error: any) => {
           LoggerService.error(`bitcoin error service: ${error}`);
-          return reject(new Error(error));
+          return reject(null);
         });
     });
   };
