@@ -29,7 +29,7 @@ export const getBalanceBEP20 = async (
     const format = Web3Client.utils.fromWei(result);
 
     return format;
-  } catch (e) {
+  } catch (e: any) {
     LoggerService.error(`[getBalanceBEP20] err:${e.toString()}`);
   }
 };
