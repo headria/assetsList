@@ -21,7 +21,7 @@ function pickApiKey(chain: EthereumChainName) {
 const MAIN_API_URL = "https://api.bscscan.com/api";
 const TESTNET_API_URL_MAP = {
   testnet: "https://api-testnet.bscscan.com",
-  mainnet: "https://api.bscscan.com/api",
+  mainnet: "https://api.bscscan.com",
 };
 const ApiKeys = {
   testnet: "1ZCF7UITDGJ46YU2H6KD7P4RWP5H57FM3J",
@@ -41,6 +41,7 @@ export default (chain: EthereumChainName, timeout: number) => {
    */
   const getRequest = (query: object) => {
     const q2 = querystring.stringify({ ...query, apiKey });
+
     return new Promise(function (resolve, reject) {
       client
         .get("/api?" + q2)
