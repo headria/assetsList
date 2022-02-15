@@ -85,10 +85,7 @@ export const validateTransaction = async (
       };
     }
     console.log(`Network ${network.toUpperCase()} is Activited`);
-    const getUrls = getNetworkUrl(
-      network,
-      network === "ETH" ? "rinkeby" : "testnet"
-    );
+    const getUrls = getNetworkUrl(network, "mainnet");
 
     const body: RPCBody = {
       jsonrpc: "2.0",
@@ -102,10 +99,7 @@ export const validateTransaction = async (
     );
 
     // TODO - change it for bsc and matic
-    const trStatus = getStatusOfTransaction(
-      tr.hash,
-      network === "ETH" ? "rinkeby" : "bsctestnet"
-    );
+    const trStatus = getStatusOfTransaction(tr.hash, "mainnet");
 
     const responsePromise = await Promise.all([resultRPC, trStatus]);
 
