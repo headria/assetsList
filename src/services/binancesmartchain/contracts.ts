@@ -25,12 +25,15 @@ export const getBalanceBEP20 = async (
   try {
     const contract = new Web3Client.eth.Contract(minABI, contractAddress);
     const result = await contract.methods.balanceOf(walletAddress).call();
+    if (!result) return "0";
 
     const format = Web3Client.utils.fromWei(result);
 
     return format;
   } catch (e: any) {
+    // NOTE - if error for gas happened most time its for worng address and contract address. maybe the dev mix them togther
     LoggerService.error(`[getBalanceBEP20] err:${e.toString()}`);
+    return "0";
   }
 };
 
