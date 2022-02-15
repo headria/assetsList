@@ -17,7 +17,11 @@ export const getBalance = async (address: string): Promise<number> => {
 
 export const getTransactionsList = async (address: string): Promise<any> => {
   try {
-    const request: any = await getReuqest(`addrs/${address}/full`)({
+    const request: any = await getReuqest(
+      `addrs/${address}/full`,
+      30000,
+      false
+    )({
       limit: 10,
     });
     return request;
