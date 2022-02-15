@@ -17,6 +17,8 @@ export const getBalanceERC20 = async (
 
     const result = await contract.methods.balanceOf(walletAddress).call({});
 
+    if (!result) return "0";
+
     const format = Web3Client.utils.fromWei(result);
 
     return format;
