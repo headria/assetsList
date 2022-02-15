@@ -22,7 +22,7 @@ export const getTransactionsList = async (address: string): Promise<any> => {
     });
     return request;
   } catch {
-    return 0;
+    return {};
   }
 };
 
