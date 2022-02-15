@@ -49,7 +49,7 @@
     "querystring": "^0.2.1",
     "svg-png-converter": "^0.0.9",
     "ts-node": "^10.4.0",
-    "web3": "^1.6.1",
+    "web3": "^1.7",
     "winston": "^3.3.3"
   }
 }
