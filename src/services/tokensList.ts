@@ -148,7 +148,7 @@ export const TokenListServices = {
         const chartData: IHistoryData[] = request.data?.Data?.Data;
 
         const sortedData: IHistoryData[] = chartData.sort(
-          (a: IHistoryData, b: IHistoryData) => b.time - a.time
+          (a: IHistoryData, b: IHistoryData) => a.time - b.time
         );
         return sortedData.map((data) => ({
           time: data.time,
