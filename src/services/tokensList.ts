@@ -41,7 +41,7 @@ export const TokenListServices = {
     if (!cachData?.cached) {
       priceListData = await nomics.currenciesTicker({
         ids: symbols,
-        interval: ["1h"],
+        interval: ["1d"],
       });
 
       // 10 seconds for cache request. when it's removed it will make new request for data
@@ -60,13 +60,13 @@ export const TokenListServices = {
         circulating_supply: x.circulating_supply,
         max_supply: x.max_supply,
         market_cap: x.market_cap,
-        volume: x["1h"]?.volume,
-        price_change: x["1h"]?.price_change,
-        price_change_pct: x["1h"]?.price_change_pct,
-        volume_change: x["1h"]?.volume_change,
-        volume_change_pct: x["1h"]?.volume_change_pct,
-        market_cap_change: x["1h"]?.market_cap_change,
-        market_cap_change_pct: x["1h"]?.market_cap_change_pct,
+        volume: x["1d"]?.volume,
+        price_change: x["1d"]?.price_change,
+        price_change_pct: x["1d"]?.price_change_pct,
+        volume_change: x["1d"]?.volume_change,
+        volume_change_pct: x["1d"]?.volume_change_pct,
+        market_cap_change: x["1d"]?.market_cap_change,
+        market_cap_change_pct: x["1d"]?.market_cap_change_pct,
       })
     );
 
