@@ -40,5 +40,6 @@ router.get(
   ArabCoinController.getTotalBalancePerAccount
 );
 router.get("/arabcoin/gettotalbalance", ArabCoinController.getTotalBalance);
+router.get("/arabcoin/gettransactions", ArabCoinController.getTransactions);
 
 export default router;

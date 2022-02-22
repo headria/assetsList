@@ -72,4 +72,16 @@ export const ArabCoinController = {
       },
     });
   },
+  getTransactions: async (req: any, res: any) => {
+    const address: string = req.query?.address;
+
+    const statusCheck = await ArabCoinService.getTransactionsByAddress(
+      address?.split(",") || ""
+    );
+    return res.status(200).send({
+      code: 0,
+      message: "",
+      data: statusCheck,
+    });
+  },
 };

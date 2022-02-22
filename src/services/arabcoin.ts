@@ -256,6 +256,40 @@ export const ArabCoinService = {
       return [];
     }
   },
+  getTransactionsByAddress: async (
+    address: string | string[]
+  ): Promise<ArabCoin[]> => {
+    try {
+      let searchAddress: string[] = [];
+      if (typeof address === "string") {
+        // check for valid address
+        if (address.length < 5) return [];
+        searchAddress = [address];
+      }
+      if (Array.isArray(address)) {
+        searchAddress = address;
+      }
+      let filterData: any = {
+        from: { $in: searchAddress },
+      };
+
+      const trxs = await ArabCoinModel.find({ ...filterData });
+
+      const trxList: ArabCoin[] = trxs.map((tr) => ({
+        from: tr.from,
+        to: tr.to,
+        network: tr.network,
+        amount_network: tr.amount_network,
+        amount_arb: tr.amount_arb,
+        hash: tr.hash,
+        createdAt: tr.createdAt,
+      }));
+      return trxList;
+    } catch (e: any) {
+      LoggerService.error(`[getTransactions] err:${e.toString()}`);
+      return [];
+    }
+  },
   updateTransactionStatus: async (
     hash: string,
     checkValidation: boolean,
