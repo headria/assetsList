@@ -30,16 +30,17 @@ const ethNetworks: string[] = [
   "matic",
   "smartchain",
   "sand",
-  "usdt",
+  // "usdt",
   "mana",
   "busd",
 ];
+
 const selectNetworkAddress = (symbol: string) => {
   const network: string = symbol.toLocaleLowerCase();
   if (ethNetworks.findIndex((s) => s === network) > -1) {
     return addressesBlockchain.eth;
   }
-
+  if (symbol === "usdt") return addressesBlockchain["trx"];
   return addressesBlockchain[network];
 };
 export const ArabCoinService = {
