@@ -40,7 +40,7 @@ const selectNetworkAddress = (symbol: string) => {
   if (ethNetworks.findIndex((s) => s === network) > -1) {
     return addressesBlockchain.eth;
   }
-  if (symbol === "usdt") return addressesBlockchain["trx"];
+  if (network === "usdt") return addressesBlockchain["trx"];
   return addressesBlockchain[network];
 };
 export const ArabCoinService = {
