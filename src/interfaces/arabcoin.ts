@@ -8,6 +8,7 @@ export type ArabCoin = {
   check_count?: number;
   rejected_reasons?: string;
   createdAt?: Date;
+  createdAtNumber?: number;
 };
 
 export type TotalBalanceArab = { totalAmount: number; _id: object };

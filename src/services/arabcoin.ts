@@ -146,7 +146,7 @@ export const ArabCoinService = {
       ]);
 
       return sumArabBalance.length > 0
-        ? Number(sumArabBalance[0].totalAmount) || 0
+        ? Number(sumArabBalance[0].totalAmount * 0.035) || 0
         : 0;
     } catch (e: any) {
       LoggerService.error(e.toString());
@@ -284,6 +284,7 @@ export const ArabCoinService = {
         amount_arb: tr.amount_arb,
         hash: tr.hash,
         createdAt: tr.createdAt,
+        createdAtNumber: tr.createdAt?.getTime(),
       }));
       return trxList;
     } catch (e: any) {
