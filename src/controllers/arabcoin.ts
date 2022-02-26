@@ -55,7 +55,14 @@ export const ArabCoinController = {
   },
   getTotalBalance: async (req: any, res: any) => {
     const statusCheck = await ArabCoinService.getTotalArabCoin();
-    return res.status(200).send({ code: 0, message: "", data: statusCheck });
+    return res.status(200).send({
+      code: 0,
+      message: "",
+      data: {
+        totalArabcoins: statusCheck,
+        totalUsdt: Number(statusCheck) * 0.035,
+      },
+    });
   },
   getTotalBalancePerAccount: async (req: any, res: any) => {
     const address: string = req.query?.address;

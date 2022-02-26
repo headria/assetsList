@@ -146,7 +146,7 @@ export const ArabCoinService = {
       ]);
 
       return sumArabBalance.length > 0
-        ? Number(sumArabBalance[0].totalAmount * 0.035) || 0
+        ? Number(sumArabBalance[0].totalAmount) || 0
         : 0;
     } catch (e: any) {
       LoggerService.error(e.toString());
