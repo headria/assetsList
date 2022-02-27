@@ -272,6 +272,7 @@ export const ArabCoinService = {
       }
       let filterData: any = {
         from: { $in: searchAddress },
+        status: transactionTypeStatus["success"],
       };
 
       const trxs = await ArabCoinModel.find({ ...filterData });
