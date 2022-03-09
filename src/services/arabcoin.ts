@@ -35,17 +35,19 @@ const ethNetworks: string[] = [
   "busd",
 ];
 
-const selectNetworkAddress = (symbol: string) => {
+const selectNetworkAddress = (symbol: string, blcokchain?: string) => {
   const network: string = symbol.toLocaleLowerCase();
+  console.log(network);
   if (ethNetworks.findIndex((s) => s === network) > -1) {
     return addressesBlockchain.eth;
   }
+
   if (network === "usdt") return addressesBlockchain["trx"];
   return addressesBlockchain[network];
 };
 export const ArabCoinService = {
   getPrice: async (
-    symbol: string
+    symbol2: string
   ): Promise<{
     arabCoin: number;
     coinPrice: number;
@@ -53,6 +55,7 @@ export const ArabCoinService = {
     networkAddress?: string;
   }> => {
     try {
+      const symbol = symbol2.toLowerCase() === "smartchain" ? "BNB" : symbol2;
       const priceList = await nomics.currenciesTicker({
         ids: [symbol],
         interval: ["1h"],
@@ -66,7 +69,7 @@ export const ArabCoinService = {
         arabCoin: arabCoinPrice,
         coinPrice,
         coinPricePerArabCoin,
-        networkAddress: selectNetworkAddress(symbol),
+        networkAddress: selectNetworkAddress(symbol2),
       };
     } catch (e: any) {
       LoggerService.error(`[arabservice-getPrice] err:${e.toString()}`);
@@ -238,7 +241,12 @@ export const ArabCoinService = {
         };
       }
 
-      console.log(filterData);
+      if (network === "BSC") {
+        filterData.network = { $in: ["BSC", "BNB"] };
+        filterData.hash = { $regex: "^0[xX][0-9a-fA-F]+$" };
+        console.log(filterData);
+      }
+
       const trxs = await ArabCoinModel.find({ ...filterData });
 
       const trxList: ArabCoin[] = trxs.map((tr) => ({
