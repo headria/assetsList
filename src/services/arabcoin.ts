@@ -33,6 +33,8 @@ const ethNetworks: string[] = [
   // "usdt",
   "mana",
   "busd",
+  "shib",
+  "doge",
 ];
 
 const selectNetworkAddress = (symbol: string, blcokchain?: string) => {
