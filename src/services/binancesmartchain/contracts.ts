@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import { AbiItem } from "web3-utils";
 import { LoggerService } from "../../logger";
+import bn from "bn.js";
 
 const provider =
   "https://bsc.getblock.io/mainnet/?api_key=2e89aac7-4985-4684-9547-fd4956bbd784";
@@ -27,6 +28,11 @@ export const getBalanceBEP20 = async (
     const result = await contract.methods.balanceOf(walletAddress).call();
     if (!result) return "0";
 
+    if (contractAddress === "") {
+      const newNumber = new bn(result);
+      const satoshiUnit = 10 ^ -8;
+      return newNumber.divn(satoshiUnit).toString();
+    }
     const format = Web3Client.utils.fromWei(result);
 
     return format;
