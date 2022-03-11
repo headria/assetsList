@@ -28,10 +28,12 @@ export const getBalanceBEP20 = async (
     const result = await contract.methods.balanceOf(walletAddress).call();
     if (!result) return "0";
 
-    if (contractAddress === "") {
+    if (contractAddress === "0xba2ae424d960c26247dd6c32edc70b295c744c43") {
       const newNumber = new bn(result);
-      const satoshiUnit = 10 ^ -8;
-      return newNumber.divn(satoshiUnit).toString();
+      console.log(newNumber);
+      const satoshiUnit = new bn(100000000);
+      console.log(newNumber.div(satoshiUnit).toString());
+      return newNumber.div(satoshiUnit).toString();
     }
     const format = Web3Client.utils.fromWei(result);
 
