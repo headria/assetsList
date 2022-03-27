@@ -9,6 +9,7 @@ import { BodyNotification } from "../interfaces/notification";
 import { LoggerService } from "../logger";
 import ArabCoinModel, { ArabCoinDTO } from "../models/arabcoin";
 import nomics from "../thirdparty/nomics";
+import { addressesBlockchain } from "../utils/addresses";
 import { NotificationService } from "./notifications";
 
 /**
@@ -17,14 +18,6 @@ import { NotificationService } from "./notifications";
  * TODO - Get Pirce per network
  */
 
-const addressesBlockchain: any = {
-  btc: "bc1qwc7pp0gwq3d5m9cmd6qwd5m5xulhws7kjrra6s",
-  eth: "0xf5e6626464125228080227f2329F76CcB0BEaB0e",
-  xrp: "rETBegDXj8VGEMt5mVKipwSzKn3D8rmyfm",
-  near: "bbba32ddfcac2b345824d2ba39e274eafeadb10aee4b058f466757bf10205b73",
-  trx: "TWkpbRMiuinWgY313omfcLE3BEb89cfjda",
-  bnb: "bnb1uprd3rtcltadhjz24f3eefct4a3v54zryasvkk",
-};
 const ethNetworks: string[] = [
   "eth",
   "matic",

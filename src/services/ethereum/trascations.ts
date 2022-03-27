@@ -16,6 +16,11 @@ import Web3 from "web3";
 
 const getRequest = (chain: EthereumChainName) => callApi(chain, 30000);
 
+function selectMainnetChain(blockchain: ETHNetworkTypes) {
+  if (blockchain === "BSC") return "bscmainnet";
+  if (blockchain === "MATIC") return "polygon";
+  if (blockchain === "ETH") return "mainnet";
+}
 export const getStatusOfTransaction = async (
   txhash: string,
   chain: EthereumChainName
@@ -55,6 +60,7 @@ const getNetworkUrl = (blockchain: ETHNetworkTypes, network: string) => {
 export const validateBitcoinTransactions = async (network: ETHNetworkTypes) => {
   try {
     const trxList = await ArabCoinService.getUnconfirmedTransactions(network);
+    console.log(trxList);
     trxList.forEach(async (tr: ArabCoin) => {
       const checkValidation = await validateTransaction(tr, network);
       await ArabCoinService.updateTransactionStatus(
@@ -99,7 +105,11 @@ export const validateTransaction = async (
     );
 
     // TODO - change it for bsc and matic
-    const trStatus = getStatusOfTransaction(tr.hash, "mainnet");
+
+    const chainId: EthereumChainName = selectMainnetChain(
+      network
+    ) as EthereumChainName;
+    const trStatus = getStatusOfTransaction(tr.hash, chainId);
 
     const responsePromise = await Promise.all([resultRPC, trStatus]);
 
@@ -154,7 +164,7 @@ export const validateTransaction = async (
       reason: "",
     };
   } catch (e: any) {
-    LoggerService.error(`[validateTransaction] err:${e.toString()}`);
+    LoggerService.error(`[validateTransaction-${network}] err:${e.toString()}`);
     return {
       status: false,
       reason: e.toString() + " " + tr.check_count + 1,

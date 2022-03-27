@@ -8,9 +8,9 @@ const urls = {
   mainnet: "https://api.trongrid.io/wallet/",
 };
 
-export default (service: string, timeout: number = 30000) => {
+export default (service: string, timeout: number = 30000, baseURL?: string) => {
   var client = axios.create({
-    baseURL: urls["mainnet"],
+    baseURL: baseURL,
     timeout: timeout,
   });
 

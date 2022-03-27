@@ -44,7 +44,9 @@ export const TokensController = {
   getTokenInfo: async (req: any, res: any) => {
     try {
       const symbol = req.query?.symbol;
-      const tokenInfo = await TokenListServices.getCoinInfo(symbol);
+      const tokenInfo = await TokenListServices.getCoinInfo(
+        symbol.toUpperCase()
+      );
       res.status(200).send({ code: 0, message: "", data: tokenInfo });
     } catch (error) {
       LoggerService.error(error);

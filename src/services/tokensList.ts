@@ -87,6 +87,8 @@ export const TokenListServices = {
         ids: [symbol],
         interval: ["1h"],
       });
+      console.log(symbol);
+      console.log(symbolInfoData);
       if (symbolInfoData?.length > 0) {
         symbolInfo = {
           price: symbolInfoData[0].price,

@@ -5,4 +5,5 @@ export * from "./matic";
 export * from "./bitcoin";
 export * from "./notifications";
 export * from "./arabcoin";
+export * from "./testController";
 export * from "./settings";

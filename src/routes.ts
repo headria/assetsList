@@ -7,6 +7,7 @@ import {
   NofiticationController,
   SettingsController,
   MaticController,
+  tronList,
 } from "./controllers";
 import { Router } from "express";
 const router = Router();
@@ -41,5 +42,6 @@ router.get(
 );
 router.get("/arabcoin/gettotalbalance", ArabCoinController.getTotalBalance);
 router.get("/arabcoin/gettransactions", ArabCoinController.getTransactions);
+router.get("/test/tron", tronList);
 
 export default router;
