@@ -66,7 +66,7 @@ export const ArabCoinController = {
   },
   getTotalBalancePerAccount: async (req: any, res: any) => {
     const address: string = req.query?.address;
-
+    console.log(address);
     const statusCheck = await ArabCoinService.getBalancePerAddress(
       address?.split(",") || ""
     );
