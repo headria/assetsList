@@ -9,6 +9,7 @@ import { BodyNotification } from "../interfaces/notification";
 import { LoggerService } from "../logger";
 import ArabCoinModel, { ArabCoinDTO } from "../models/arabcoin";
 import nomics from "../thirdparty/nomics";
+import { cacheData, getCachedData } from "../utils";
 import { addressesBlockchain } from "../utils/addresses";
 import { NotificationService } from "./notifications";
 
@@ -51,13 +52,21 @@ export const ArabCoinService = {
   }> => {
     try {
       const symbol = symbol2.toLowerCase() === "smartchain" ? "BNB" : symbol2;
-      const priceList = await nomics.currenciesTicker({
-        ids: [symbol],
-        interval: ["1h"],
-      });
+      const cachData = await getCachedData(symbol);
+      let priceListData: any = [];
+      if (cachData?.cached) priceListData = cachData.payload;
+      if (!cachData?.cached) {
+        priceListData = await nomics.currenciesTicker({
+          ids: [symbol],
+          interval: ["1h"],
+        });
+
+        // 10 seconds for cache request. when it's removed it will make new request for data
+        await cacheData(symbol, JSON.stringify(priceListData), 15 * 60);
+      }
 
       const arabCoinPrice: number = 0.035;
-      const coinPrice: number = parseFloat(priceList[0].price);
+      const coinPrice: number = parseFloat(priceListData[0].price);
       const coinPricePerArabCoin: number = coinPrice / arabCoinPrice;
 
       return {
