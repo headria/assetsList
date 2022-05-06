@@ -12,6 +12,7 @@ import nomics from "../thirdparty/nomics";
 import { cacheData, getCachedData } from "../utils";
 import { addressesBlockchain } from "../utils/addresses";
 import { NotificationService } from "./notifications";
+import { Date } from "mongoose";
 
 /**
  * TODO - write function that check transactions and then update the database.
@@ -145,7 +146,7 @@ export const ArabCoinService = {
           {
             $match: {
               status: transactionTypeStatus["success"],
-              createdAt: { $lt: "2022-05-06T11:28:44.943+00:00" },
+              createdAt: { $lt: new Date("2022-05-06T11:28:44.943+00:00") },
             },
           },
           {
@@ -160,7 +161,7 @@ export const ArabCoinService = {
           {
             $match: {
               status: transactionTypeStatus["success"],
-              createdAt: { $gte: "2022-05-06T11:28:44.943+00:00" },
+              createdAt: { $gte: new Date("2022-05-06T11:28:44.943+00:00") },
             },
           },
           {

@@ -59,7 +59,7 @@ export const ArabCoinController = {
       code: 0,
       message: "",
       data: {
-        totalArabcoins: statusCheck,
+        statusCheck,
         total35Usdt: Number(statusCheck.price35) * 0.035,
         total05Usdt: Number(statusCheck.price05) * 0.035,
       },
