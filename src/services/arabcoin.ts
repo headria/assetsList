@@ -138,26 +138,54 @@ export const ArabCoinService = {
       return false;
     }
   },
-  getTotalArabCoin: async (): Promise<Number> => {
+  getTotalArabCoin: async (): Promise<{ price35: number; price05: number }> => {
     try {
-      const sumArabBalance: TotalBalanceArab[] = await ArabCoinModel.aggregate([
-        {
-          $match: { status: transactionTypeStatus["success"] },
-        },
-        {
-          $group: {
-            _id: {},
-            totalAmount: { $sum: "$amount_arb" },
+      const sum35ArabBalance: TotalBalanceArab[] =
+        await ArabCoinModel.aggregate([
+          {
+            $match: {
+              status: transactionTypeStatus["success"],
+              createdAt: { $lt: "2022-05-06T11:28:44.943+00:00" },
+            },
           },
-        },
-      ]);
-
-      return sumArabBalance.length > 0
-        ? Number(sumArabBalance[0].totalAmount) || 0
-        : 0;
+          {
+            $group: {
+              _id: {},
+              totalAmount: { $sum: "$amount_arb" },
+            },
+          },
+        ]);
+      const sum05ArabBalance: TotalBalanceArab[] =
+        await ArabCoinModel.aggregate([
+          {
+            $match: {
+              status: transactionTypeStatus["success"],
+              createdAt: { $gte: "2022-05-06T11:28:44.943+00:00" },
+            },
+          },
+          {
+            $group: {
+              _id: {},
+              totalAmount: { $sum: "$amount_arb" },
+            },
+          },
+        ]);
+      return {
+        price35:
+          sum35ArabBalance.length > 0
+            ? Number(sum35ArabBalance[0].totalAmount) || 0
+            : 0,
+        price05:
+          sum05ArabBalance.length > 0
+            ? Number(sum05ArabBalance[0].totalAmount) || 0
+            : 0,
+      };
     } catch (e: any) {
       LoggerService.error(e.toString());
-      return 0;
+      return {
+        price35: 0,
+        price05: 0,
+      };
     }
   },
   getBalancePerAddress: async (address: string | string[]): Promise<Number> => {
