@@ -60,7 +60,7 @@ export const ArabCoinController = {
       message: "",
       data: {
         totalArabcoins: statusCheck,
-        totalUsdt: Number(statusCheck) * 0.035,
+        totalUsdt: Number(statusCheck) * 0.05,
       },
     });
   },
@@ -75,7 +75,7 @@ export const ArabCoinController = {
       message: "",
       data: {
         balance: statusCheck,
-        price: 0.035,
+        price: 0.05,
       },
     });
   },

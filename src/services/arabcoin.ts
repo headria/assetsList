@@ -65,7 +65,7 @@ export const ArabCoinService = {
         await cacheData(symbol, JSON.stringify(priceListData), 15 * 60);
       }
 
-      const arabCoinPrice: number = 0.035;
+      const arabCoinPrice: number = 0.05;
       const coinPrice: number = parseFloat(priceListData[0].price);
       const coinPricePerArabCoin: number = coinPrice / arabCoinPrice;
 
