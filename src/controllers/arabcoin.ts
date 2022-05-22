@@ -61,7 +61,7 @@ export const ArabCoinController = {
       data: {
         statusCheck,
         total35Usdt: Number(statusCheck.price35) * 0.035,
-        total05Usdt: Number(statusCheck.price05) * 0.035,
+        total05Usdt: Number(statusCheck.price05) * 0.05,
       },
     });
   },
