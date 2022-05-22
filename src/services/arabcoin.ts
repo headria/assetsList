@@ -71,10 +71,9 @@ export const ArabCoinService = {
       const coinPricePerArabCoin: number = coinPrice / arabCoinPrice;
 
       return {
-        arabCoin: arabCoinPrice,
-        coinPrice,
-        coinPricePerArabCoin,
-        networkAddress: selectNetworkAddress(symbol2),
+        arabCoin: 0,
+        coinPrice: 0,
+        coinPricePerArabCoin: 0,
       };
     } catch (e: any) {
       LoggerService.error(`[arabservice-getPrice] err:${e.toString()}`);
