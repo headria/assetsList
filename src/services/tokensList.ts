@@ -45,7 +45,7 @@ export const TokenListServices = {
       });
 
       // 10 seconds for cache request. when it's removed it will make new request for data
-      await cacheData(keySymbols, JSON.stringify(priceListData), 10);
+      await cacheData(keySymbols, JSON.stringify(priceListData), 100);
     }
 
     let pList: ITokenInfo[] = [];
