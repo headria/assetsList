@@ -29,8 +29,8 @@ router.get("/ethereum/balanceoferc20", EthereumController.getBalanceERC20);
 router.get("/smartchain/balanceofbep20", SmartchainController.getBalanceBEP20);
 router.get("/smartchain/getlisttx", SmartchainController.getAllTx);
 
-router.get("/smartchain/balanceofbep20", FantomController.getBalanceBEP20);
-router.get("/smartchain/getlisttx", FantomController.getAllTx);
+router.get("/fantom/balanceofbep20", FantomController.getBalanceBEP20);
+router.get("/fantom/getlisttx", FantomController.getAllTx);
 
 router.get("/matic/getlisttx", MaticController.getAllTx);
 router.get("/arabcoin/getprice", ArabCoinController.getPrice);
