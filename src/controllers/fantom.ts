@@ -1,12 +1,12 @@
 import { LoggerService } from "../logger";
-import { SmartchainService } from "../services";
+import { FantomService } from "../services";
 export const FantomController = {
   getAllTx: async (req: any, res: any) => {
     try {
       const query = req.query;
 
       let txList = [];
-      txList = await SmartchainService.accounts.getListTransactions(
+      txList = await FantomService.accounts.getListTransactions(
         query?.address,
         query?.startblock,
         query?.endblock,
@@ -29,7 +29,7 @@ export const FantomController = {
     try {
       const query = req.query;
 
-      const balance = await SmartchainService.contracts.getBalanceBEP20(
+      const balance = await FantomService.contracts.getBalanceBEP20(
         query?.contractAddress,
         query?.walletAddress
       );
