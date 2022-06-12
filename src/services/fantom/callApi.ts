@@ -24,8 +24,8 @@ const TESTNET_API_URL_MAP = {
   mainnet: "https://api.ftmscan.com",
 };
 const ApiKeys = {
-  testnet: "1ZCF7UITDGJ46YU2H6KD7P4RWP5H57FM3J",
-  mainnet: "1ZCF7UITDGJ46YU2H6KD7P4RWP5H57FM3J",
+  testnet: "TYRB29B1JEKRXN7PAHVB63CMCCQZ5GM39H",
+  mainnet: "TYRB29B1JEKRXN7PAHVB63CMCCQZ5GM39H",
 };
 
 export default (chain: EthereumChainName, timeout: number) => {
