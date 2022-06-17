@@ -52,29 +52,34 @@ export const ArabCoinService = {
     networkAddress?: string;
   }> => {
     try {
-      const symbol = symbol2.toLowerCase() === "smartchain" ? "BNB" : symbol2;
-      const cachData = await getCachedData(symbol);
-      let priceListData: any = [];
-      if (cachData?.cached) priceListData = cachData.payload;
-      if (!cachData?.cached) {
-        priceListData = await nomics.currenciesTicker({
-          ids: [symbol],
-          interval: ["1h"],
-        });
+      // const symbol = symbol2.toLowerCase() === "smartchain" ? "BNB" : symbol2;
+      // const cachData = await getCachedData(symbol);
+      // let priceListData: any = [];
+      // if (cachData?.cached) priceListData = cachData.payload;
+      // if (!cachData?.cached) {
+      //   priceListData = await nomics.currenciesTicker({
+      //     ids: [symbol],
+      //     interval: ["1h"],
+      //   });
 
-        // 10 seconds for cache request. when it's removed it will make new request for data
-        await cacheData(symbol, JSON.stringify(priceListData), 15 * 60);
-      }
+      //   // 10 seconds for cache request. when it's removed it will make new request for data
+      //   await cacheData(symbol, JSON.stringify(priceListData), 15 * 60);
+      // }
 
-      const arabCoinPrice: number = 0.05;
-      const coinPrice: number = parseFloat(priceListData[0].price);
-      const coinPricePerArabCoin: number = coinPrice / arabCoinPrice;
+      // const arabCoinPrice: number = 0.05;
+      // const coinPrice: number = parseFloat(priceListData[0].price);
+      // const coinPricePerArabCoin: number = coinPrice / arabCoinPrice;
 
+      // return {
+      //   arabCoin: arabCoinPrice,
+      //   coinPrice,
+      //   coinPricePerArabCoin,
+      //   networkAddress: selectNetworkAddress(symbol2),
+      // };
       return {
-        arabCoin: arabCoinPrice,
-        coinPrice,
-        coinPricePerArabCoin,
-        networkAddress: selectNetworkAddress(symbol2),
+        arabCoin: 0,
+        coinPrice: 0,
+        coinPricePerArabCoin: 0,
       };
     } catch (e: any) {
       LoggerService.error(`[arabservice-getPrice] err:${e.toString()}`);
