@@ -1,3 +1,4 @@
+import { BobaController } from "./controllers/boba";
 import {
   TokensController,
   EthereumController,
@@ -31,6 +32,9 @@ router.get("/smartchain/getlisttx", SmartchainController.getAllTx);
 
 router.get("/fantom/balanceofbep20", FantomController.getBalanceBEP20);
 router.get("/fantom/getlisttx", FantomController.getAllTx);
+
+router.get("/fantom/balanceofbep20", BobaController.getBoba20);
+router.get("/fantom/getlisttx", BobaController.getAllTx);
 
 router.get("/matic/getlisttx", MaticController.getAllTx);
 router.get("/arabcoin/getprice", ArabCoinController.getPrice);

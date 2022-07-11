@@ -2,6 +2,7 @@ export * from "./tokensList";
 export * from "./etheruem";
 export * from "./binancesmartchain";
 export * from "./fantom";
+export * from "./boba";
 export * from "./matic";
 export * from "./bitcoin";
 export * from "./notifications";
