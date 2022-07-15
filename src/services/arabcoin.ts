@@ -52,34 +52,29 @@ export const ArabCoinService = {
     networkAddress?: string;
   }> => {
     try {
-      // const symbol = symbol2.toLowerCase() === "smartchain" ? "BNB" : symbol2;
-      // const cachData = await getCachedData(symbol);
-      // let priceListData: any = [];
-      // if (cachData?.cached) priceListData = cachData.payload;
-      // if (!cachData?.cached) {
-      //   priceListData = await nomics.currenciesTicker({
-      //     ids: [symbol],
-      //     interval: ["1h"],
-      //   });
+      const symbol = symbol2.toLowerCase() === "smartchain" ? "BNB" : symbol2;
+      const cachData = await getCachedData(symbol);
+      let priceListData: any = [];
+      if (cachData?.cached) priceListData = cachData.payload;
+      if (!cachData?.cached) {
+        priceListData = await nomics.currenciesTicker({
+          ids: [symbol],
+          interval: ["1h"],
+        });
 
-      //   // 10 seconds for cache request. when it's removed it will make new request for data
-      //   await cacheData(symbol, JSON.stringify(priceListData), 15 * 60);
-      // }
+        // 10 seconds for cache request. when it's removed it will make new request for data
+        await cacheData(symbol, JSON.stringify(priceListData), 15 * 60);
+      }
 
-      // const arabCoinPrice: number = 0.05;
-      // const coinPrice: number = parseFloat(priceListData[0].price);
-      // const coinPricePerArabCoin: number = coinPrice / arabCoinPrice;
+      const arabCoinPrice: number = 0.07;
+      const coinPrice: number = parseFloat(priceListData[0].price);
+      const coinPricePerArabCoin: number = coinPrice / arabCoinPrice;
 
-      // return {
-      //   arabCoin: arabCoinPrice,
-      //   coinPrice,
-      //   coinPricePerArabCoin,
-      //   networkAddress: selectNetworkAddress(symbol2),
-      // };
       return {
-        arabCoin: 0,
-        coinPrice: 0,
-        coinPricePerArabCoin: 0,
+        arabCoin: arabCoinPrice,
+        coinPrice,
+        coinPricePerArabCoin,
+        networkAddress: selectNetworkAddress(symbol2),
       };
     } catch (e: any) {
       LoggerService.error(`[arabservice-getPrice] err:${e.toString()}`);
@@ -144,7 +139,11 @@ export const ArabCoinService = {
       return false;
     }
   },
-  getTotalArabCoin: async (): Promise<{ price35: number; price05: number }> => {
+  getTotalArabCoin: async (): Promise<{
+    price35: number;
+    price05: number;
+    price07: number;
+  }> => {
     try {
       const sum35ArabBalance: TotalBalanceArab[] =
         await ArabCoinModel.aggregate([
@@ -176,6 +175,21 @@ export const ArabCoinService = {
             },
           },
         ]);
+      const sum07ArabBalance: TotalBalanceArab[] =
+        await ArabCoinModel.aggregate([
+          {
+            $match: {
+              status: transactionTypeStatus["success"],
+              createdAt: { $gte: new Date("2022-06-15T11:28:44.943+00:00") },
+            },
+          },
+          {
+            $group: {
+              _id: {},
+              totalAmount: { $sum: "$amount_arb" },
+            },
+          },
+        ]);
       return {
         price35:
           sum35ArabBalance.length > 0
@@ -185,12 +199,17 @@ export const ArabCoinService = {
           sum05ArabBalance.length > 0
             ? Number(sum05ArabBalance[0].totalAmount) || 0
             : 0,
+        price07:
+          sum07ArabBalance.length > 0
+            ? Number(sum07ArabBalance[0].totalAmount) || 0
+            : 0,
       };
     } catch (e: any) {
       LoggerService.error(e.toString());
       return {
         price35: 0,
         price05: 0,
+        price07: 0,
       };
     }
   },
