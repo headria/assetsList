@@ -11,7 +11,7 @@ export type ArabCoin = {
   createdAtNumber?: number;
 };
 
-export type TotalBalanceArab = { totalAmount: number; _id: object };
+export type TotalBalanceType = { totalAmount: number; _id: object };
 
 /**
  * new for new transaction(s)

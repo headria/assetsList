@@ -10,6 +10,7 @@ import {
   MaticController,
   tronList,
   FantomController,
+  ReferralController,
 } from "./controllers";
 import { Router } from "express";
 const router = Router();
@@ -35,6 +36,11 @@ router.get("/fantom/getlisttx", FantomController.getAllTx);
 
 router.get("/boba/balanceofboba20", BobaController.getBoba20);
 router.get("/boba/getlisttx", BobaController.getAllTx);
+
+router.get("/referral/balance", ReferralController.getBalanceByAddress);
+router.get("/referral/getrefcode", ReferralController.getReferralByAddress);
+router.post("/referral/new", ReferralController.addNew);
+router.post("/referral/updatepercentage", ReferralController.updatePercentage);
 
 router.get("/matic/getlisttx", MaticController.getAllTx);
 router.get("/arabcoin/getprice", ArabCoinController.getPrice);

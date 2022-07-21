@@ -1,7 +1,7 @@
 import { DevicesService } from ".";
 import {
   ArabCoin,
-  TotalBalanceArab,
+  TotalBalanceType,
   TransactionStatus,
   transactionTypeStatus,
 } from "../interfaces/arabcoin";
@@ -11,8 +11,7 @@ import ArabCoinModel, { ArabCoinDTO } from "../models/arabcoin";
 import nomics from "../thirdparty/nomics";
 import { cacheData, getCachedData } from "../utils";
 import { addressesBlockchain } from "../utils/addresses";
-import { NotificationService } from "./notifications";
-import { Date } from "mongoose";
+import * as refService from "./referralcodes";
 
 /**
  * TODO - write function that check transactions and then update the database.
@@ -145,7 +144,7 @@ export const ArabCoinService = {
     price07: number;
   }> => {
     try {
-      const sum35ArabBalance: TotalBalanceArab[] =
+      const sum35ArabBalance: TotalBalanceType[] =
         await ArabCoinModel.aggregate([
           {
             $match: {
@@ -160,7 +159,7 @@ export const ArabCoinService = {
             },
           },
         ]);
-      const sum05ArabBalance: TotalBalanceArab[] =
+      const sum05ArabBalance: TotalBalanceType[] =
         await ArabCoinModel.aggregate([
           {
             $match: {
@@ -175,7 +174,7 @@ export const ArabCoinService = {
             },
           },
         ]);
-      const sum07ArabBalance: TotalBalanceArab[] =
+      const sum07ArabBalance: TotalBalanceType[] =
         await ArabCoinModel.aggregate([
           {
             $match: {
@@ -224,7 +223,7 @@ export const ArabCoinService = {
       if (Array.isArray(address)) {
         searchAddress = address;
       }
-      const sumArabBalance: TotalBalanceArab[] = await ArabCoinModel.aggregate([
+      const sumArabBalance: TotalBalanceType[] = await ArabCoinModel.aggregate([
         {
           $match: {
             status: transactionTypeStatus["success"],
@@ -427,6 +426,36 @@ export const ArabCoinService = {
     } catch (e: any) {
       LoggerService.error(`[updateTransactionStatus] err:${e.toString()}`);
       return false;
+    }
+  },
+  populateReferralBalance: async (address: string): Promise<number> => {
+    try {
+      const getReferralCodeData = await refService.getReferralByAddress(
+        address
+      );
+      if (!getReferralCodeData || !getReferralCodeData.referral_code) return 0;
+      const refCode = getReferralCodeData.referral_code;
+      const getAllValidTransactions: TotalBalanceType[] =
+        await ArabCoinModel.aggregate([
+          {
+            $match: {
+              status: transactionTypeStatus["success"],
+              ref_code: refCode,
+            },
+          },
+          {
+            $group: {
+              _id: {},
+              totalAmount: { $sum: "$amount_arb" },
+            },
+          },
+        ]);
+      return getAllValidTransactions.length > 0
+        ? Number(getAllValidTransactions[0].totalAmount) || 0
+        : 0;
+    } catch (e: any) {
+      LoggerService.error(`[populateReferralBalance] err:${e.toString()}`);
+      return 0;
     }
   },
 };

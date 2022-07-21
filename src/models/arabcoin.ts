@@ -10,6 +10,7 @@ export interface ArabCoinDTO extends Document {
   hash: string;
   status: string;
   check_count: number;
+  ref_code: string;
   rejected_reasons?: string;
   createdAt?: Date;
 }
@@ -44,6 +45,10 @@ const arabCoin = new Schema(
     amount_arb: {
       type: Number,
       trim: true,
+    },
+    ref_code: {
+      type: String,
+      required: false,
     },
     rejected_reasons: {
       type: String,
