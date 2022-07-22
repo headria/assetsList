@@ -50,6 +50,10 @@ const arabCoin = new Schema(
       type: String,
       required: false,
     },
+    diccount: {
+      type: Number,
+      required: false,
+    },
     rejected_reasons: {
       type: String,
     },

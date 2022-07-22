@@ -26,11 +26,13 @@ const checkExitsReferralCodeByaddressAndCode = async (
     let query: any = {};
     if (referral_code) query.referral_code = referral_code;
 
+    console.log(address);
     if (address) {
       if (Array.isArray(address))
         query.user_wallet_addresseses = { $all: address };
       else query.user_wallet_addresseses = { $all: [address] };
     }
+    console.log(query);
 
     const doc = await ReferralModel.findOne(query);
     if (!doc) return undefined;
@@ -81,6 +83,7 @@ export const generateNewReferral = async (params: any) => {
       user_wallet_addresses
     );
     if (checkByAddress) return checkByAddress;
+
     const doc = await ReferralModel.create({
       referral_code,
       user_wallet_addresseses: user_wallet_addresses,

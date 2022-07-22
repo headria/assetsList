@@ -91,7 +91,12 @@ export const ReferralController = {
       return res.status(200).send({
         code: 0,
         message: "",
-        data: result,
+        data: {
+          ...result,
+
+          // discount = 10 + 5 - ref.percentage
+          diccount: 15 - parseInt(result?.percentage?.toString() || "0"),
+        },
       });
     } catch (e: any) {
       LoggerService.error(e.toString());
