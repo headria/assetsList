@@ -19,6 +19,7 @@ export const ReferralController = {
   },
   updatePercentage: async (req: any, res: any) => {
     try {
+      console.log(req.body);
       const result = await refService.updatePercentage(req.body);
       return res.status(200).send({
         code: 0,
@@ -51,6 +52,25 @@ export const ReferralController = {
           .send({ code: -1, message: "Address is required" });
       const result = await ArabCoinService.populateReferralBalance(
         req.query?.address
+      );
+      return res.status(200).send({
+        code: 0,
+        message: "",
+        data: result,
+      });
+    } catch (e: any) {
+      LoggerService.error(e.toString());
+      return res.status(500).send({});
+    }
+  },
+  checkRefCode: async (req: any, res: any) => {
+    try {
+      if (!req.query?.referralcode)
+        return res
+          .status(400)
+          .send({ code: -1, message: "Referral code is required" });
+      const result = await refService.checkExitsReferralCodeByCode(
+        req.query?.referralcode
       );
       return res.status(200).send({
         code: 0,
