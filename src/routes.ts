@@ -42,6 +42,11 @@ router.get("/referral/getrefcode", ReferralController.getReferralByAddress);
 router.post("/referral/new", ReferralController.addNew);
 router.post("/referral/updatepercentage", ReferralController.updatePercentage);
 router.get("/referral/checkrefcode", ReferralController.checkRefCode);
+router.get("/referral/claimrequest", ReferralController.newClaim);
+router.get(
+  "/referral/getlaststatusclaim",
+  ReferralController.getLastStatusClaim
+);
 
 router.get("/matic/getlisttx", MaticController.getAllTx);
 router.get("/arabcoin/getprice", ArabCoinController.getPrice);

@@ -98,4 +98,35 @@ export const ReferralController = {
       return res.status(500).send({});
     }
   },
+  newClaim: async (req, res) => {
+    const query = req.query;
+    if (!query.address)
+      return res.status(400).send({
+        code: -1,
+        message: "Address is required",
+      });
+
+    return res.status(200).send({
+      code: 0,
+      message: "",
+      data: true,
+    });
+  },
+  getLastStatusClaim: async (req, res) => {
+    const query = req.query;
+    if (!query.address)
+      return res.status(400).send({
+        code: -1,
+        message: "Address is required",
+      });
+
+    return res.status(200).send({
+      code: 0,
+      message: "",
+      data: {
+        nextPayment: 1658583836,
+        locked: true,
+      },
+    });
+  },
 };
