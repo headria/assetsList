@@ -96,7 +96,6 @@ export const generateNewReferral = async (params: any) => {
 export const updatePercentage = async (params: any) => {
   const { referral_code, percentage } = params;
   try {
-    console.log(referral_code);
     const doc = await ReferralModel.updateOne(
       { referral_code },
       {

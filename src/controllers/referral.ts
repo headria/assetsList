@@ -19,7 +19,23 @@ export const ReferralController = {
   },
   updatePercentage: async (req: any, res: any) => {
     try {
-      console.log(req.body);
+      const percentage = req.body?.percentage;
+      if (!percentage)
+        return res.status(400).send({
+          code: -1,
+          message: "percentage is required.",
+        });
+      if (!req.body?.referral_code)
+        return res.status(400).send({
+          code: -1,
+          message: "referral_code is required.",
+        });
+
+      if (percentage > 10 || percentage < 0)
+        return res.status(400).send({
+          code: -1,
+          message: "percentage must be between 0 to 10.",
+        });
       const result = await refService.updatePercentage(req.body);
       return res.status(200).send({
         code: 0,
