@@ -98,7 +98,7 @@ export const ReferralController = {
       return res.status(500).send({});
     }
   },
-  newClaim: async (req, res) => {
+  newClaim: async (req: any, res: any) => {
     const query = req.query;
     if (!query.address)
       return res.status(400).send({
@@ -112,7 +112,7 @@ export const ReferralController = {
       data: true,
     });
   },
-  getLastStatusClaim: async (req, res) => {
+  getLastStatusClaim: async (req: any, res: any) => {
     const query = req.query;
     if (!query.address)
       return res.status(400).send({
