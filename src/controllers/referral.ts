@@ -93,7 +93,6 @@ export const ReferralController = {
         message: "",
         data: {
           referral_code: result?.referral_code,
-          user_wallet_addresseses: result?.user_wallet_addresseses,
           percentage: result?.percentage,
 
           // discount = 10 + 5 - ref.percentage
