@@ -96,7 +96,7 @@ export const ReferralController = {
           percentage: result?.percentage,
 
           // discount = 10 + 5 - ref.percentage
-          diccount: 15 - parseInt(result?.percentage?.toString() || "0"),
+          discount: 15 - parseInt(result?.percentage?.toString() || "0"),
         },
       });
     } catch (e: any) {
