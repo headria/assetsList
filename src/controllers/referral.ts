@@ -99,11 +99,19 @@ export const ReferralController = {
           (x) => x === req.query?.address
         ) || -1;
       if (findAddress > 0) {
-        return res.status(200).send({
+        return res.status(400).send({
           code: -1,
           message: "You can't use your referral code.",
         });
       }
+
+      if (!result?.referral_code) {
+        return res.status(400).send({
+          code: -1,
+          message: "referral code was not found.",
+        });
+      }
+
       return res.status(200).send({
         code: 0,
         message: "",
