@@ -85,9 +85,25 @@ export const ReferralController = {
         return res
           .status(400)
           .send({ code: -1, message: "Referral code is required" });
-      const result = await refService.checkExitsReferralCodeByCode(
+      if (!req.query?.address)
+        return res
+          .status(400)
+          .send({ code: -1, message: "Address code is required" });
+      const result = await refService.checkExitsReferralCodeByaddressAndCode(
         req.query?.referralcode
       );
+      console.log(result);
+
+      const findAddress =
+        result?.user_wallet_addresseses.findIndex(
+          (x) => x === req.query?.address
+        ) || -1;
+      if (findAddress > 0) {
+        return res.status(200).send({
+          code: -1,
+          message: "You can't use your referral code.",
+        });
+      }
       return res.status(200).send({
         code: 0,
         message: "",

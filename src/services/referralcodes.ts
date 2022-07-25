@@ -18,7 +18,7 @@ export const getReferralByAddress = async (address?: string) => {
     return undefined;
   }
 };
-const checkExitsReferralCodeByaddressAndCode = async (
+export const checkExitsReferralCodeByaddressAndCode = async (
   referral_code?: string,
   address?: string | string[]
 ) => {
