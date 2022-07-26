@@ -5,6 +5,22 @@ import { ArabCoinService } from "../services/arabcoin";
 export const ReferralController = {
   addNew: async (req: any, res: any) => {
     try {
+      if (!req.body.user_wallet_addresses)
+        return res.status(400).send({
+          code: -1,
+          message: "user_wallet_addresses is required.",
+        });
+      if (!req.body.dID)
+        return res.status(400).send({
+          code: -1,
+          message: "dID is required.",
+        });
+
+      if (!req.body.percentage)
+        return res.status(400).send({
+          code: -1,
+          message: "percentage is required.",
+        });
       const result = await refService.generateNewReferral(req.body);
       return res.status(200).send({
         code: 0,
@@ -89,16 +105,24 @@ export const ReferralController = {
         return res
           .status(400)
           .send({ code: -1, message: "Address code is required" });
+      if (!req.query.dID)
+        return res.status(400).send({
+          code: -1,
+          message: "dID is required.",
+        });
       const result = await refService.checkExitsReferralCodeByaddressAndCode(
         req.query?.referralcode
       );
       console.log(result);
 
       const findAddress =
-        result?.user_wallet_addresseses.findIndex(
+        result?.user_wallet_addresses.findIndex(
           (x) => x === req.query?.address
         ) || -1;
-      if (findAddress > 0) {
+
+      const dIdCheck = result?.dID === req.query.dID;
+
+      if (findAddress > 0 || dIdCheck) {
         return res.status(400).send({
           code: -1,
           message: "You can't use your referral code.",

@@ -4,12 +4,12 @@ import { LoggerService } from "../logger";
 
 const alphabet =
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-const getNewCode = customAlphabet(alphabet, 6);
+const getNewCode = customAlphabet(alphabet, 9);
 
 export const getReferralByAddress = async (address?: string) => {
   try {
     let query: any = {};
-    query.user_wallet_addresseses = { $all: [address] };
+    query.user_wallet_addresses = { $all: [address] };
 
     const doc = await ReferralModel.findOne(query);
     if (!doc) return undefined;
@@ -29,10 +29,9 @@ export const checkExitsReferralCodeByaddressAndCode = async (
     console.log(address);
     if (address) {
       if (Array.isArray(address))
-        query.user_wallet_addresseses = { $all: address };
-      else query.user_wallet_addresseses = { $all: [address] };
+        query.user_wallet_addresses = { $all: address };
+      else query.user_wallet_addresses = { $all: [address] };
     }
-    console.log(query);
 
     const doc = await ReferralModel.findOne(query);
     if (!doc) return undefined;
@@ -74,7 +73,7 @@ const generateNewCode = async (): Promise<string> => {
   return referral_code;
 };
 export const generateNewReferral = async (params: any) => {
-  const { user_wallet_addresses, percentage } = params;
+  const { dID, user_wallet_addresses, percentage } = params;
   try {
     const referral_code: string = await generateNewCode();
 
@@ -86,7 +85,8 @@ export const generateNewReferral = async (params: any) => {
 
     const doc = await ReferralModel.create({
       referral_code,
-      user_wallet_addresseses: user_wallet_addresses,
+      user_wallet_addresses: user_wallet_addresses,
+      dID: dID,
       percentage,
     });
     return doc;
@@ -119,7 +119,7 @@ export const getUserWallets = async (params: any) => {
   try {
     const doc = await ReferralModel.findOne(
       { referral_code },
-      { user_wallet_addresseses: 1, _id: 0 }
+      { user_wallet_addresses: 1, _id: 0 }
     );
     if (!doc) return null;
     return doc;
@@ -130,11 +130,11 @@ export const getUserWallets = async (params: any) => {
 };
 
 export const addUserWallets = async (params: any) => {
-  const { referral_code, user_wallet_addresseses } = params;
+  const { referral_code, user_wallet_addresses } = params;
   try {
     const doc = await ReferralModel.findOneAndUpdate(
       { referral_code },
-      { $addToSet: { user_wallet_addresseses } },
+      { $addToSet: { user_wallet_addresses } },
       { new: true }
     );
     if (!doc) return null;

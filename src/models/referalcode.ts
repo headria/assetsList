@@ -3,8 +3,9 @@ import { Schema, model, Document } from "mongoose";
 const collectionName = "referralcodes";
 export interface ReferralCodesDTO extends Document {
   referral_code: string;
-  user_wallet_addresseses: [string];
+  user_wallet_addresses: [string];
   percentage: number;
+  dID: string;
 }
 
 const refcodes = new Schema(
@@ -14,7 +15,7 @@ const refcodes = new Schema(
       unique: true,
       required: true,
     },
-    user_wallet_addresseses: {
+    user_wallet_addresses: {
       type: [String],
     },
 
@@ -22,6 +23,13 @@ const refcodes = new Schema(
       type: Number,
       default: 10,
       required: true,
+    },
+    dID: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+      unique: true,
     },
   },
   { timestamps: true }
