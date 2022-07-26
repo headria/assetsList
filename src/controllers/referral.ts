@@ -21,6 +21,12 @@ export const ReferralController = {
           code: -1,
           message: "percentage is required.",
         });
+      const persentage = parseInt(req.body.percentage);
+      if (persentage > 10 || persentage < 5)
+        return res.status(400).send({
+          code: -1,
+          message: "percentage must be between 5 to 10.",
+        });
       const result = await refService.generateNewReferral(req.body);
       return res.status(200).send({
         code: 0,
