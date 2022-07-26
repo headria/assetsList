@@ -106,14 +106,14 @@ export const ReferralController = {
       if (!req.query?.referralcode)
         return res
           .status(400)
-          .send({ code: -1, message: "Referral code is required" });
+          .send({ code: -3, message: "Referral code is required" });
       if (!req.query?.address)
         return res
           .status(400)
-          .send({ code: -1, message: "Address code is required" });
+          .send({ code: -3, message: "Address code is required" });
       if (!req.query.dID)
         return res.status(400).send({
-          code: -1,
+          code: -3,
           message: "dID is required.",
         });
       const result = await refService.checkExitsReferralCodeByaddressAndCode(
@@ -130,7 +130,7 @@ export const ReferralController = {
 
       if (findAddress > 0 || dIdCheck) {
         return res.status(400).send({
-          code: -1,
+          code: -5,
           message: "You can't use your referral code.",
         });
       }
