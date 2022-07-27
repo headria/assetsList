@@ -1,3 +1,4 @@
+import { VideoHelperController } from "./controllers/videoHelper";
 import { BobaController } from "./controllers/boba";
 import {
   TokensController,
@@ -65,4 +66,5 @@ router.get("/arabcoin/gettotalbalance", ArabCoinController.getTotalBalance);
 router.get("/arabcoin/gettransactions", ArabCoinController.getTransactions);
 router.get("/test/tron", tronList);
 
+router.get("/video/gethelp", VideoHelperController.getVideo);
 export default router;

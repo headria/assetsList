@@ -10,3 +10,4 @@ export * from "./arabcoin";
 export * from "./testController";
 export * from "./settings";
 export * from "./referral";
+export * from "./videoHelper";
