@@ -49,10 +49,14 @@ export const TokenListServices = {
     }
 
     let pList: ITokenInfo[] = [];
-    priceListData.forEach((x: any) =>
+    priceListData.forEach((x: any) => {
+      let name = x.name;
+      if (name == "Boba Network") {
+        name = "Ethereum (Boba)";
+      }
       pList.push({
         symbol: x.symbol === "SAND" ? "SAND2" : x.symbol,
-        name: x.name,
+        name: name,
         logo: x.logo_url,
         price: x.price,
         price_date: x.price_date,
@@ -67,8 +71,8 @@ export const TokenListServices = {
         volume_change_pct: x["1d"]?.volume_change_pct,
         market_cap_change: x["1d"]?.market_cap_change,
         market_cap_change_pct: x["1d"]?.market_cap_change_pct,
-      })
-    );
+      });
+    });
 
     return pList;
   },
