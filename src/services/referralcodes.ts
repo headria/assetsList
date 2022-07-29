@@ -1,6 +1,7 @@
 import ReferralModel from "../models/referalcode";
 import { nanoid, customAlphabet } from "nanoid";
 import { LoggerService } from "../logger";
+import { IServiceResult } from "../interfaces/general";
 
 const alphabet =
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -72,16 +73,31 @@ const generateNewCode = async (): Promise<string> => {
 
   return referral_code;
 };
-export const generateNewReferral = async (params: any) => {
+export const generateNewReferral = async (
+  params: any
+): Promise<IServiceResult> => {
   const { dID, user_wallet_addresses, percentage } = params;
   try {
     const referral_code: string = await generateNewCode();
 
+    if (!Array.isArray(user_wallet_addresses)) {
+      return {
+        code: -1,
+        message: "user_wallet_addresses must be an array.",
+      };
+    }
+    if (user_wallet_addresses.length < 5) {
+      return {
+        code: -1,
+        message:
+          "user_wallet_addresses length must be bigger than five address .",
+      };
+    }
     const checkByAddress = await checkExitsReferralCodeByaddressAndCode(
       undefined,
       user_wallet_addresses
     );
-    if (checkByAddress) return checkByAddress;
+    if (checkByAddress) return { code: 0, message: "", data: checkByAddress };
 
     const doc = await ReferralModel.create({
       referral_code,
@@ -89,10 +105,17 @@ export const generateNewReferral = async (params: any) => {
       dID: dID,
       percentage,
     });
-    return doc;
+    return {
+      code: 0,
+      message: "",
+      data: doc,
+    };
   } catch (e) {
     LoggerService.error(`[generateNewReferral] err: ${e}`);
-    return null;
+    return {
+      code: -1,
+      message: "Error occured on the server.",
+    };
   }
 };
 

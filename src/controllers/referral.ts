@@ -1,3 +1,4 @@
+import { IServiceResult } from "./../interfaces/general";
 import { LoggerService } from "../logger";
 import * as refService from "../services/referralcodes";
 import { ArabCoinService } from "../services/arabcoin";
@@ -27,12 +28,13 @@ export const ReferralController = {
           code: -1,
           message: "percentage must be between 5 to 10.",
         });
-      const result = await refService.generateNewReferral(req.body);
-      return res.status(200).send({
-        code: 0,
-        message: "",
-        data: result,
-      });
+      const result: IServiceResult = await refService.generateNewReferral(
+        req.body
+      );
+      if (result.code !== 0) {
+        return res.status(400).send(result);
+      }
+      return res.status(200).send(result);
     } catch (e: any) {
       LoggerService.error(e.toString());
 
