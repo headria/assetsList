@@ -2,6 +2,7 @@ import ReferralModel from "../models/referalcode";
 import { nanoid, customAlphabet } from "nanoid";
 import { LoggerService } from "../logger";
 import { IServiceResult } from "../interfaces/general";
+import { isConstructorDeclaration } from "typescript";
 
 const alphabet =
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -77,6 +78,8 @@ export const generateNewReferral = async (
   params: any
 ): Promise<IServiceResult> => {
   const { dID, user_wallet_addresses, percentage } = params;
+
+  console.log({ dID, user_wallet_addresses, percentage });
   try {
     const referral_code: string = await generateNewCode();
 
