@@ -451,7 +451,7 @@ export const ArabCoinService = {
           },
         ]);
       return getAllValidTransactions.length > 0
-        ? Number(getAllValidTransactions[0].totalAmount) || 0
+        ? Number(getAllValidTransactions[0].totalAmount * 0.1) || 0
         : 0;
     } catch (e: any) {
       LoggerService.error(`[populateReferralBalance] err:${e.toString()}`);

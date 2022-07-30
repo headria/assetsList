@@ -4,6 +4,9 @@ export type ArabCoin = {
   network: string;
   amount_network: string;
   amount_arb: number;
+  ref_code?: string;
+  discount?: number;
+  price_arabcoin?: number;
   hash: string;
   check_count?: number;
   rejected_reasons?: string;

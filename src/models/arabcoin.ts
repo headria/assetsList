@@ -11,6 +11,9 @@ export interface ArabCoinDTO extends Document {
   status: string;
   check_count: number;
   ref_code: string;
+  discount?: number;
+  price_arabcoin?: number;
+
   rejected_reasons?: string;
   createdAt?: Date;
 }
@@ -50,7 +53,11 @@ const arabCoin = new Schema(
       type: String,
       required: false,
     },
-    diccount: {
+    price_arabcoin: {
+      type: Number,
+      required: false,
+    },
+    discount: {
       type: Number,
       required: false,
     },
