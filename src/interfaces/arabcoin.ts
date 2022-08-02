@@ -14,6 +14,13 @@ export type ArabCoin = {
   createdAtNumber?: number;
 };
 
+export type ArabCoinSummeryTransaction = {
+  trHash: string;
+  arabCoinAmount: number;
+  networkAmount: string;
+  network: string;
+  createdAt: string | Date;
+};
 export type TotalBalanceType = { totalAmount: number; _id: object };
 
 /**

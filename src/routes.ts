@@ -56,6 +56,10 @@ router.get("/notifications/sendtest", NofiticationController.sendNotifTest);
 router.post("/notifications/new", NofiticationController.addNewDevice);
 router.get("/notifications/status", NofiticationController.checkStatusNotif);
 router.get("/arabcoin/getprice", ArabCoinController.getPrice);
+router.get(
+  "/arabcoin/getsuccesslist",
+  ArabCoinController.getSuccessTransactions
+);
 router.post("/arabcoin/buy", ArabCoinController.newRequest);
 router.get("/arabcoin/checkamount", ArabCoinController.checkAmount);
 router.get(

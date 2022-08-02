@@ -1,5 +1,7 @@
+import { ArabCoinSummeryTransaction } from "./../interfaces/arabcoin";
 import { ArabCoin } from "../interfaces/arabcoin";
 import { ArabCoinService } from "../services";
+import { LoggerService } from "../logger";
 
 export const ArabCoinController = {
   getPrice: async (req: any, res: any) => {
@@ -92,5 +94,18 @@ export const ArabCoinController = {
       message: "",
       data: statusCheck,
     });
+  },
+  getSuccessTransactions: async (req: any, res: any) => {
+    try {
+      const listtrxs = await ArabCoinService.getArabCoinSuccessTransactions();
+
+      return res.status(200).send({
+        code: 0,
+        message: "",
+        data: listtrxs,
+      });
+    } catch (e: any) {
+      LoggerService.error("[getSuccessTransactions] err:" + e.toString());
+    }
   },
 };

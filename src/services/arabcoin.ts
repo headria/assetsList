@@ -1,6 +1,7 @@
 import { DevicesService } from ".";
 import {
   ArabCoin,
+  ArabCoinSummeryTransaction,
   TotalBalanceType,
   TransactionStatus,
   transactionTypeStatus,
@@ -30,6 +31,8 @@ const ethNetworks: string[] = [
   "shib",
   "doge",
 ];
+
+const cacheSuccessList = "successList";
 
 const selectNetworkAddress = (symbol: string, blcokchain?: string) => {
   const network: string = symbol.toLocaleLowerCase();
@@ -456,6 +459,41 @@ export const ArabCoinService = {
     } catch (e: any) {
       LoggerService.error(`[populateReferralBalance] err:${e.toString()}`);
       return 0;
+    }
+  },
+  getArabCoinSuccessTransactions: async (): Promise<
+    ArabCoinSummeryTransaction[]
+  > => {
+    try {
+      let filterData: any = {
+        status: transactionTypeStatus["success"],
+      };
+
+      let cachedData = await getCachedData(cacheSuccessList);
+      let trxList: ArabCoinSummeryTransaction[] = [];
+      console.log(cachedData.payload);
+      if (!cachedData.cached) {
+        cachedData.payload = await ArabCoinModel.find({ ...filterData }).sort({
+          createdAt: -1,
+        });
+        trxList = cachedData.payload.map((tr: any) => ({
+          network: tr.network,
+          networkAmount: tr.amount_network,
+          arabCoinAmount: tr.amount_arb,
+          trHash: tr.hash,
+          createdAt: tr.createdAt || "",
+        }));
+        cacheData(cacheSuccessList, JSON.stringify(trxList), 60);
+      } else {
+        trxList = cachedData.payload;
+      }
+
+      return trxList;
+    } catch (e: any) {
+      LoggerService.error(
+        `[getArabCoinSuccessTransactions] err:${e.toString()}`
+      );
+      return [];
     }
   },
 };
