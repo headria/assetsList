@@ -145,8 +145,23 @@ export const ArabCoinService = {
     price35: number;
     price05: number;
     price07: number;
+    total: number;
   }> => {
     try {
+      const sumTotalArabBalance: TotalBalanceType[] =
+        await ArabCoinModel.aggregate([
+          {
+            $match: {
+              status: transactionTypeStatus["success"],
+            },
+          },
+          {
+            $group: {
+              _id: {},
+              totalAmount: { $sum: "$amount_arb" },
+            },
+          },
+        ]);
       const sum35ArabBalance: TotalBalanceType[] =
         await ArabCoinModel.aggregate([
           {
@@ -167,7 +182,10 @@ export const ArabCoinService = {
           {
             $match: {
               status: transactionTypeStatus["success"],
-              createdAt: { $gte: new Date("2022-05-06T11:28:44.943+00:00") },
+              createdAt: {
+                $gte: new Date("2022-05-07T11:28:44.943+00:00"),
+                $lt: new Date("2022-07-14T11:28:44.943+00:00"),
+              },
             },
           },
           {
@@ -182,7 +200,7 @@ export const ArabCoinService = {
           {
             $match: {
               status: transactionTypeStatus["success"],
-              createdAt: { $gte: new Date("2022-06-15T11:28:44.943+00:00") },
+              createdAt: { $gte: new Date("2022-07-14T11:28:44.943+00:00") },
             },
           },
           {
@@ -205,6 +223,10 @@ export const ArabCoinService = {
           sum07ArabBalance.length > 0
             ? Number(sum07ArabBalance[0].totalAmount) || 0
             : 0,
+        total:
+          sumTotalArabBalance.length > 0
+            ? Number(sumTotalArabBalance[0].totalAmount) || 0
+            : 0,
       };
     } catch (e: any) {
       LoggerService.error(e.toString());
@@ -212,6 +234,7 @@ export const ArabCoinService = {
         price35: 0,
         price05: 0,
         price07: 0,
+        total: 0,
       };
     }
   },
