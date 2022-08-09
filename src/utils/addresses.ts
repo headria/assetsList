@@ -6,7 +6,7 @@ export const addressesBlockchain: SymbolType = {
   eth: "0x650DE70ABF24EfC5c9d00ee91cac52b7eE1bc184",
   // xrp: "rETBegDXj8VGEMt5mVKipwSzKn3D8rmyfm",
   // near: "bbba32ddfcac2b345824d2ba39e274eafeadb10aee4b058f466757bf10205b73",
-  // trx: "TWkpbRMiuinWgY313omfcLE3BEb89cfjda",
+  trx: "TWkpbRMiuinWgY313omfcLE3BEb89cfjda",
   // bnb: "bnb1uprd3rtcltadhjz24f3eefct4a3v54zryasvkk",
 };
 
