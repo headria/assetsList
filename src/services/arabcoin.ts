@@ -40,8 +40,6 @@ const selectNetworkAddress = (symbol: string, blcokchain?: string) => {
   if (ethNetworks.findIndex((s) => s === network) > -1) {
     return addressesBlockchain.eth;
   }
-  if (network === "matic") return "0xf5e6626464125228080227f2329F76CcB0BEaB0e";
-  if (network === "eth") return "0xf5e6626464125228080227f2329F76CcB0BEaB0e";
 
   if (network === "usdt") return addressesBlockchain["trx"];
   return addressesBlockchain[network];
