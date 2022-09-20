@@ -72,11 +72,16 @@ export const ArabCoinService = {
       const coinPrice: number = parseFloat(priceListData[0].price);
       const coinPricePerArabCoin: number = coinPrice / arabCoinPrice;
 
+      // return {
+      //   arabCoin: arabCoinPrice,
+      //   coinPrice,
+      //   coinPricePerArabCoin,
+      //   networkAddress: selectNetworkAddress(symbol2),
+      // };
       return {
-        arabCoin: arabCoinPrice,
-        coinPrice,
-        coinPricePerArabCoin,
-        networkAddress: selectNetworkAddress(symbol2),
+        arabCoin: 0,
+        coinPrice: 0,
+        coinPricePerArabCoin: 0,
       };
     } catch (e: any) {
       LoggerService.error(`[arabservice-getPrice] err:${e.toString()}`);
@@ -200,7 +205,7 @@ export const ArabCoinService = {
           {
             $match: {
               status: transactionTypeStatus["success"],
-              createdAt: { $gte: new Date("2022-07-14T11:28:44.943+00:00") },
+              createdAt: { $gte: new Date("2022-07-14T11:29:44.943+00:00") },
             },
           },
           {
@@ -494,7 +499,6 @@ export const ArabCoinService = {
 
       let cachedData = await getCachedData(cacheSuccessList);
       let trxList: ArabCoinSummeryTransaction[] = [];
-      console.log(cachedData.payload);
       if (!cachedData.cached) {
         cachedData.payload = await ArabCoinModel.find({ ...filterData }).sort({
           createdAt: -1,
@@ -506,7 +510,39 @@ export const ArabCoinService = {
           trHash: tr.hash,
           createdAt: tr.createdAt || "",
         }));
-        cacheData(cacheSuccessList, JSON.stringify(trxList), 60);
+        cacheData(cacheSuccessList, JSON.stringify(trxList), 600);
+      } else {
+        trxList = cachedData.payload;
+      }
+
+      return trxList;
+    } catch (e: any) {
+      LoggerService.error(
+        `[getArabCoinSuccessTransactions] err:${e.toString()}`
+      );
+      return [];
+    }
+  },
+  getTransaction: async (): Promise<ArabCoinSummeryTransaction[]> => {
+    try {
+      let filterData: any = {
+        status: transactionTypeStatus["success"],
+      };
+
+      let cachedData = await getCachedData(cacheSuccessList);
+      let trxList: ArabCoinSummeryTransaction[] = [];
+      if (!cachedData.cached) {
+        cachedData.payload = await ArabCoinModel.find({ ...filterData }).sort({
+          createdAt: -1,
+        });
+        trxList = cachedData.payload.map((tr: any) => ({
+          network: tr.network,
+          networkAmount: tr.amount_network,
+          arabCoinAmount: tr.amount_arb,
+          trHash: tr.hash,
+          createdAt: tr.createdAt || "",
+        }));
+        cacheData(cacheSuccessList, JSON.stringify(trxList), 600);
       } else {
         trxList = cachedData.payload;
       }
