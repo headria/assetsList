@@ -4,11 +4,11 @@ require("dotenv").config();
 
 let db: any = {};
 var mongoConnectionUri: any = {
-  server: "cluster0.vnbkz.mongodb.net",
+  server: "cluster0.qg3ftga.mongodb.net",
   port: "27017",
-  username: "arab2wallet",
-  password: "Ej6N8spsk4PngIj4",
-  database: "arabwallet",
+  username: "Planetlabs",
+  password: "KoZ0huvNY5ZYg48V",
+  database: "walletmemes",
   shard: true,
 };
 const uri =
