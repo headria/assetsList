@@ -3,7 +3,6 @@ import helmet from "helmet";
 import { createServer } from "http";
 import { LoggerService } from "./logger";
 import routes from "./routes";
-import * as cronService from "./cronjobs";
 
 const mongoose = require("./database");
 
@@ -21,9 +20,6 @@ require("dotenv").config();
   });
 }
 
-{
-  cronService.cronJobs();
-}
 async function run() {
   const app = express();
   const PORT = process.env.PORT || 5005;
