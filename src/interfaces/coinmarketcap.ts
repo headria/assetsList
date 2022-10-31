@@ -59,3 +59,43 @@ export type ICapResult<A> = {
   };
   data: A;
 };
+
+export type ItemSymbolData = {
+  id?: number;
+  name?: string;
+  symbol?: string;
+  category?: string;
+  description?: string;
+  slug?: string;
+  logo?: string;
+  subreddit?: string;
+  notice?: string;
+  tags?: string[];
+  "tag-names"?: string[];
+  "tag-groups"?: string[];
+  urls?: {
+    website: string[];
+    twitter: string[];
+    message_board: string[];
+    chat: string[];
+    facebook: string[];
+    explorer: string[];
+    reddit: string[];
+    technical_doc: string[];
+    source_code: string[];
+    announcement: string[];
+  };
+  platform?: unknown;
+  date_added?: string;
+  twitter_username?: string;
+  is_hidden?: number;
+  date_launched?: string;
+  contract_address?: string[];
+  self_reported_circulating_supply?: unknown;
+  self_reported_tags?: unknown;
+  self_reported_market_cap?: unknown;
+};
+
+export type ItemsSymbolDatas = {
+  [s: string]: ItemSymbolData;
+};

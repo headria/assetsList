@@ -1,6 +1,8 @@
 import {
   ICapResult,
   IQoutes,
+  ItemsSymbolDatas,
+  ItemSymbolData,
   QoutePriceData,
   Quote,
 } from "./../interfaces/coinmarketcap";
@@ -22,7 +24,7 @@ import {
 } from "../thirdparty/minCryptoApis";
 import { LoggerService } from "../logger";
 import { getCachedData, cacheData } from "../utils";
-import { getRealTimePrice } from "../thirdparty/coinmarketcap";
+import { getMetaData, getRealTimePrice } from "../thirdparty/coinmarketcap";
 
 const prefixCachePraceData = "-priceList";
 
@@ -58,8 +60,6 @@ export const TokenListServices = {
         keySymbols += symbol + ",";
       }
     }
-
-    console.log(keySymbols);
 
     if (keySymbols.length > 2) {
       const getData = await getRealTimePrice({
@@ -126,55 +126,53 @@ export const TokenListServices = {
     let symbolInfo: ITokenInfo = {};
     let keySymbolCacheData: string = `symbolData-${symbol}`;
     const cachData = await getCachedData(keySymbolCacheData);
-    if (cachData?.cached) symbolInfo = cachData.payload as ITokenInfo;
 
-    if (!cachData?.cached) {
-      let symbolInfoData: any = {};
-      symbolInfoData = await nomics.currenciesTicker({
-        ids: [symbol],
-        interval: ["1h"],
-      });
-      console.log(symbol);
-      console.log(symbolInfoData);
-      if (symbolInfoData?.length > 0) {
-        symbolInfo = {
-          price: symbolInfoData[0].price,
-          price_date: symbolInfoData[0].price_date,
-          price_timestamp: symbolInfoData[0].price_timestamp,
-          circulating_supply: symbolInfoData[0].circulating_supply,
-          max_supply: symbolInfoData[0].max_supply,
-          market_cap: symbolInfoData[0].market_cap,
-          volume: symbolInfoData[0]["1h"]?.volume,
-          price_change: symbolInfoData[0]["1h"]?.price_change,
-          price_change_pct: symbolInfoData[0]["1h"]?.price_change_pct,
-          volume_change: symbolInfoData[0]["1h"]?.volume_change,
-          volume_change_pct: symbolInfoData[0]["1h"]?.volume_change_pct,
-          market_cap_change: symbolInfoData[0]["1h"]?.market_cap_change,
-          market_cap_change_pct: symbolInfoData[0]["1h"]?.market_cap_change_pct,
-        };
-      }
-      const query = {
-        ids: symbol,
-        attributes: "description,name,original_symbol,website_url",
-      };
-      await nomicsAxios
-        .get("currencies?" + generateQuery(query))
-        .then((res) => {
-          if (res?.status === 200) {
-            const d = res.data[0];
-            symbolInfo = {
-              ...symbolInfo,
-              symbol:
-                d.original_symbol === "SAND" ? "SAND2" : d.original_symbol,
-              name: d.name,
-              description: d.description,
-              website_url: d.website_url,
-              coinmarketcapUrl: `https://coinmarketcap.com/currencies/${d.name}/`,
-            };
-          }
-        });
-      await cacheData(keySymbolCacheData, JSON.stringify(symbolInfo), 300);
+    if (cachData?.cached) {
+      return cachData.payload as ITokenInfo;
     }
+
+    let symbolInfoData: ICapResult<ItemsSymbolDatas> = await getMetaData({
+      symbol,
+    });
+
+    if (symbolInfoData.status?.error_code != 0) return symbolInfo;
+
+    const symbolData: ItemSymbolData = symbolInfoData.data[symbol];
+
+    if (!symbolData.id) return symbolInfo;
+
+    const getPriceList: ITokenInfo[] =
+      await TokenListServices.get1HourPirceList({
+        symbols: [symbol],
+      });
+    console.log(getPriceList);
+    if (getPriceList.length === 0) return symbolInfo;
+
+    symbolInfo = {
+      price: getPriceList[0].price,
+      price_date: getPriceList[0].price_date,
+      price_timestamp: getPriceList[0].price_timestamp,
+      circulating_supply: getPriceList[0].circulating_supply,
+      max_supply: getPriceList[0].max_supply,
+      market_cap: getPriceList[0].market_cap,
+      volume: getPriceList[0]?.volume,
+      price_change: getPriceList[0]?.price_change,
+      price_change_pct: getPriceList[0]?.price_change_pct,
+      volume_change: getPriceList[0]?.volume_change,
+      volume_change_pct: getPriceList[0]?.volume_change_pct,
+      market_cap_change: getPriceList[0]?.market_cap_change,
+      market_cap_change_pct: getPriceList[0]?.market_cap_change_pct,
+      symbol: symbolData.symbol,
+      name: symbolData.name,
+      description: symbolData.description,
+      website_url: symbolData.urls?.website[0] || "",
+      coinmarketcapUrl: `https://coinmarketcap.com/currencies/${symbolData.name?.replace(
+        " ",
+        "-"
+      )}/`,
+    };
+
+    await cacheData(keySymbolCacheData, JSON.stringify(symbolInfo), 300);
 
     return symbolInfo;
   },

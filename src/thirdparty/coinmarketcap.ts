@@ -1,4 +1,8 @@
-import { ICapResult, IQoutes } from "./../interfaces/coinmarketcap";
+import {
+  ICapResult,
+  IQoutes,
+  ItemsSymbolDatas,
+} from "./../interfaces/coinmarketcap";
 import axios from "axios";
 import { LoggerService } from "../logger";
 const querystring = require("querystring");
@@ -75,4 +79,15 @@ export const getRealTimePrice = async (
   query?: object
 ): Promise<ICapResult<IQoutes>> => {
   return (await coinmartketApi("quotes/latest")(query)) as ICapResult<IQoutes>;
+};
+
+/**
+ *  ref: https://coinmarketcap.com/api/documentation/v1/#operation/getV2CryptocurrencyInfo
+ * @param query
+ * @returns
+ */
+export const getMetaData = async (
+  query?: object
+): Promise<ICapResult<ItemsSymbolDatas>> => {
+  return (await coinmartketApi("info")(query)) as ICapResult<ItemsSymbolDatas>;
 };
