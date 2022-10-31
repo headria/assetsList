@@ -1,3 +1,9 @@
+import {
+  ICapResult,
+  IQoutes,
+  QoutePriceData,
+  Quote,
+} from "./../interfaces/coinmarketcap";
 import { IAssetsDetailsItem } from "../thirdparty/types";
 import tokensList from "./tokenssamples";
 import nomics, { generateQuery, nomicsAxios } from "../thirdparty/nomics";
@@ -16,6 +22,9 @@ import {
 } from "../thirdparty/minCryptoApis";
 import { LoggerService } from "../logger";
 import { getCachedData, cacheData } from "../utils";
+import { getRealTimePrice } from "../thirdparty/coinmarketcap";
+
+const prefixCachePraceData = "-priceList";
 
 export const TokenListServices = {
   getList: async ({ symbol }: { symbol?: string }) => {
@@ -32,45 +41,79 @@ export const TokenListServices = {
   }: {
     symbols?: string[];
   }): Promise<any[]> => {
-    let priceListData: any = [];
-    let keySymbols: string = symbols?.join(",") || "";
-    const cachData = await getCachedData(keySymbols);
+    let priceListData: IQoutes = {};
+    let keySymbols: string = "";
 
-    if (cachData?.cached) priceListData = cachData.payload;
+    for (const symbol of symbols || []) {
+      const cachData = await getCachedData(
+        symbol.toUpperCase() + prefixCachePraceData
+      );
+      if (cachData?.cached) {
+        priceListData = {
+          ...priceListData,
+          [symbol]: cachData.payload as Quote,
+        };
+      } else {
+        console.log({ symbol, payload: cachData.payload });
+        keySymbols += symbol + ",";
+      }
+    }
 
-    if (!cachData?.cached) {
-      priceListData = await nomics.currenciesTicker({
-        ids: symbols,
-        interval: ["1d"],
+    console.log(keySymbols);
+
+    if (keySymbols.length > 2) {
+      const getData = await getRealTimePrice({
+        symbol: keySymbols,
       });
-
-      // 10 seconds for cache request. when it's removed it will make new request for data
-      await cacheData(keySymbols, JSON.stringify(priceListData), 100);
+      const keys: string[] = Object.keys(getData.data || {});
+      // 100 seconds for cache request. cache each symbol sprately
+      for (const symbolName of keys) {
+        const symbolData = getData.data[symbolName];
+        await cacheData(
+          symbolName + prefixCachePraceData,
+          JSON.stringify(symbolData),
+          300
+        );
+        priceListData = {
+          ...priceListData,
+          [symbolName]: symbolData,
+        };
+      }
     }
 
     let pList: ITokenInfo[] = [];
-    priceListData.forEach((x: any) => {
-      let name = x.name;
+    const keys: string[] = Object.keys(priceListData);
+
+    keys.forEach((symbolName: string) => {
+      const symbolData = priceListData[symbolName];
+      if (!symbolData) return;
+
+      let name = symbolData.name;
+
       if (name == "Boba Network") {
         name = "Ethereum (Boba)";
       }
+
+      //@ts-ignore
+      const priceData: QoutePriceData = symbolData.quote["USD"];
+
       pList.push({
-        symbol: x.symbol === "SAND" ? "SAND2" : x.symbol,
+        symbol: symbolData.symbol,
         name: name,
-        logo: x.logo_url,
-        price: x.price,
-        price_date: x.price_date,
-        price_timestamp: x.price_timestamp,
-        circulating_supply: x.circulating_supply,
-        max_supply: x.max_supply,
-        market_cap: x.market_cap,
-        volume: x["1d"]?.volume,
-        price_change: x["1d"]?.price_change,
-        price_change_pct: x["1d"]?.price_change_pct,
-        volume_change: x["1d"]?.volume_change,
-        volume_change_pct: x["1d"]?.volume_change_pct,
-        market_cap_change: x["1d"]?.market_cap_change,
-        market_cap_change_pct: x["1d"]?.market_cap_change_pct,
+        logo: "",
+        price: priceData.price?.toString(),
+        price_date: priceData.last_updated?.toString(),
+        price_timestamp: priceData.last_updated?.toString(),
+        circulating_supply: symbolData.circulating_supply?.toString(),
+        max_supply: symbolData.max_supply?.toString(),
+        market_cap: priceData.market_cap?.toString(),
+        volume: priceData.volume_24h?.toString(),
+        price_change: priceData?.percent_change_1h?.toString(),
+        price_change_pct: priceData?.percent_change_1h?.toString(),
+        volume_change: priceData?.volume_change_24h?.toString(),
+        volume_change_pct: priceData?.volume_change_24h?.toString(),
+        market_cap_change: "0",
+        market_cap_change_pct: "0",
       });
     });
 

@@ -18,14 +18,14 @@ function pickApiKey(chain: EthereumChainName) {
   return ApiKeys[chain];
 }
 
-const MAIN_API_URL = "https://blockexplorer.boba.network/api";
+const MAIN_API_URL = "https://api.bobascan.com/api";
 const TESTNET_API_URL_MAP = {
   testnet: "https://api-testnet.bscscan.com",
   mainnet: "https://blockexplorer.boba.network",
 };
 const ApiKeys = {
-  testnet: "1ZCF7UITDGJ46YU2H6KD7P4RWP5H57FM3J",
-  mainnet: "1ZCF7UITDGJ46YU2H6KD7P4RWP5H57FM3J",
+  testnet: "QFF596MU5FGDEZS8PHUPST3X2WWH59THFV",
+  mainnet: "QFF596MU5FGDEZS8PHUPST3X2WWH59THFV",
 };
 
 export default (chain: EthereumChainName, timeout: number) => {
