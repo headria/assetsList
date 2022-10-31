@@ -1,31 +1,29 @@
 const querystring = require("querystring");
 const axios = require("axios");
 
-export type EthereumChainName = "testnet" | "mainnet";
+export type EthereumChainName = "testnet" | "mainnet" | "avax";
 /**
  * @param {string} chain
  * @returns {string}
  */
 
-function pickChainUrl(chain: EthereumChainName) {
-  if (!chain || !TESTNET_API_URL_MAP[chain]) {
-    return MAIN_API_URL;
-  }
-
-  return TESTNET_API_URL_MAP[chain];
+function pickChainUrl(chain: EthereumChainName = "mainnet") {
+  return Urls[chain];
 }
 function pickApiKey(chain: EthereumChainName) {
   return ApiKeys[chain];
 }
 
 const MAIN_API_URL = "https://api.bobascan.com/api";
-const TESTNET_API_URL_MAP = {
+const Urls = {
   testnet: "https://api-testnet.bscscan.com",
-  mainnet: "https://blockexplorer.boba.network",
+  mainnet: "https://api.bobascan.com",
+  avax: "https://blockexplorer.avax.boba.network",
 };
 const ApiKeys = {
   testnet: "QFF596MU5FGDEZS8PHUPST3X2WWH59THFV",
   mainnet: "QFF596MU5FGDEZS8PHUPST3X2WWH59THFV",
+  avax: undefined,
 };
 
 export default (chain: EthereumChainName, timeout: number) => {
@@ -33,8 +31,8 @@ export default (chain: EthereumChainName, timeout: number) => {
     baseURL: pickChainUrl(chain),
     timeout: timeout,
   });
-  // const apiKey = pickApiKey(chain);
-  const apiKey = undefined;
+  const apiKey = pickApiKey(chain);
+  // const apiKey = undefined;
 
   /**
    * @param query
@@ -42,6 +40,7 @@ export default (chain: EthereumChainName, timeout: number) => {
    */
   const getRequest = (query: object) => {
     const q2 = querystring.stringify({ ...query, apiKey });
+    console.log(pickChainUrl(chain) + "/api?" + q2);
 
     return new Promise(function (resolve, reject) {
       client
@@ -64,7 +63,6 @@ export default (chain: EthereumChainName, timeout: number) => {
 
           if (data.error) {
             var message = data.error;
-
             if (typeof data.error === "object" && data.error.message) {
               message = data.error.message;
             }

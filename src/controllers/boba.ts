@@ -1,5 +1,7 @@
 import { LoggerService } from "../logger";
 import { Boba } from "../services";
+import { convertToUnit } from "../utils/convert";
+
 export const BobaController = {
   getAllTx: async (req: any, res: any) => {
     try {
@@ -19,25 +21,27 @@ export const BobaController = {
 
       txList = txList.filter((x: any) => x.value !== "0");
 
-      res.status(200).send({ code: 0, message: "", data: txList });
+      return res.status(200).send({ code: 0, message: "", data: txList });
     } catch (error) {
       LoggerService.error(error);
-      res.status(500).send({});
+      return res.status(500).send({});
     }
   },
+
   getBoba20: async (req: any, res: any) => {
     try {
       const query = req.query;
 
-      const balance = await Boba.contracts.getBalanceBEP20(
-        query?.contractAddress,
-        query?.walletAddress
+      let result = await Boba.accounts.getBalance(
+        query?.address,
+        query.contractAddress,
+        query?.chain
       );
-
-      res.status(200).send({ code: 0, message: "", data: balance });
+      const format = convertToUnit(result, "ETH");
+      return res.status(200).send({ code: 0, message: "", data: format });
     } catch (error) {
       LoggerService.error(error);
-      res.status(500).send({});
+      return res.status(500).send({});
     }
   },
 };
