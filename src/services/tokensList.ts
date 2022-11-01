@@ -90,10 +90,6 @@ export const TokenListServices = {
 
       let name = symbolData.name;
 
-      if (name == "Boba Network") {
-        name = "Ethereum (Boba)";
-      }
-
       //@ts-ignore
       const priceData: QoutePriceData = symbolData.quote["USD"];
 
