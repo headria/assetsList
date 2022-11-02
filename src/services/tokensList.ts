@@ -8,6 +8,7 @@ import {
 } from "./../interfaces/coinmarketcap";
 import { IAssetsDetailsItem } from "../thirdparty/types";
 import tokensList from "./tokenssamples";
+import nomics, { generateQuery, nomicsAxios } from "../thirdparty/nomics";
 import { supportedTokens } from "../tokens/supportedTokens";
 import { ITokenContract } from "../interfaces/tokens";
 import { ITokenInfo } from "../interfaces/tokenInfo";
@@ -96,21 +97,19 @@ export const TokenListServices = {
         symbol: symbolData.symbol,
         name: name,
         logo: "",
-        price: ((priceData.price || 0) / 100)?.toString(),
+        price: priceData.price?.toString(),
         price_date: priceData.last_updated?.toString(),
         price_timestamp: priceData.last_updated?.toString(),
         circulating_supply: symbolData.circulating_supply?.toString(),
         max_supply: symbolData.max_supply?.toString(),
-        market_cap: ((priceData.market_cap || 0) / 100)?.toString(),
-        volume: ((priceData.volume_24h || 0) / 100)?.toString(),
-        price_change: ((priceData?.percent_change_1h || 0) / 100)?.toString(),
+        market_cap: priceData.market_cap?.toString(),
+        volume: priceData.volume_24h?.toString(),
+        price_change: ((priceData?.percent_change_24h || 0) / 100)?.toString(),
         price_change_pct: (
-          (priceData?.percent_change_1h || 0) / 100
+          (priceData?.percent_change_24h || 0) / 100
         )?.toString(),
-        volume_change: ((priceData?.volume_change_24h || 0) / 100)?.toString(),
-        volume_change_pct: (
-          (priceData?.volume_change_24h || 0) / 100
-        )?.toString(),
+        volume_change: priceData?.volume_change_24h?.toString(),
+        volume_change_pct: priceData?.volume_change_24h?.toString(),
         market_cap_change: "0",
         market_cap_change_pct: "0",
       });
