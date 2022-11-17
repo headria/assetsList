@@ -7,5 +7,6 @@ export * from "./tokensList";
 export * from "./arabcoin";
 export * from "./addresses";
 export * from "./devices";
+export * from "./assets";
 
 export * from "./referralcodes";

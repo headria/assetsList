@@ -12,6 +12,7 @@ import {
   tronList,
   FantomController,
   ReferralController,
+  AssetsController,
 } from "./controllers";
 import { Router } from "express";
 const router = Router();
@@ -71,4 +72,7 @@ router.get("/arabcoin/gettransactions", ArabCoinController.getTransactions);
 router.get("/test/tron", tronList);
 
 router.get("/video/gethelp", VideoHelperController.getVideo);
+
+router.get("/assets/getasset", AssetsController.getTokenByContractAddress);
+
 export default router;

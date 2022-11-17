@@ -11,3 +11,4 @@ export * from "./testController";
 export * from "./settings";
 export * from "./referral";
 export * from "./videoHelper";
+export * from "./assets";
