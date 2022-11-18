@@ -4,7 +4,7 @@ import { createServer } from "http";
 import { LoggerService } from "./logger";
 import routes from "./routes";
 
-const mongoose = require("./database");
+import mongoose from "./database";
 
 const bodyParser = require("body-parser");
 const compression = require("compression");
@@ -13,7 +13,7 @@ require("dotenv").config();
 
 //mongoose
 {
-  mongoose.init(function (err: any, db: any) {
+  mongoose(function (err: any, db: any) {
     if (err) {
       LoggerService.error(err.message);
     }

@@ -1,5 +1,4 @@
 import Web3 from "web3";
-import { AbiItem } from "web3-utils";
 import { LoggerService } from "../../logger";
 import { abiData } from "../../utils/abi";
 

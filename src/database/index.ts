@@ -1,8 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import { LoggerService } from "../logger";
-require("dotenv").config();
 
-let db: any = {};
+dotenv.config();
+
+export let db: any = {};
+
 var mongoConnectionUri: any = {
   server: "cluster0.qg3ftga.mongodb.net",
   port: "27017",
@@ -11,10 +14,9 @@ var mongoConnectionUri: any = {
   database: "walletmemes",
   shard: true,
 };
-const uri =
-  "mongodb+srv://admin:<password>@cluster0-fbhza.mongodb.net/test?retryWrites=true&w=majority";
 
-var CONNECTION_URI = "";
+export var CONNECTION_URI = "";
+
 if (!mongoConnectionUri.username) {
   CONNECTION_URI =
     "mongodb://" +
@@ -59,47 +61,32 @@ if (process.env.TD_MONGODB_URI) CONNECTION_URI = process.env.TD_MONGODB_URI;
 
 var options: any = {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
 };
 
-export const init = (callback: any, connectionString: string, opts: any) => {
+const init = async (callback?: any, connectionString?: string, opts?: any) => {
   if (connectionString) CONNECTION_URI = connectionString;
   if (opts) options = opts;
   options.dbName = mongoConnectionUri.database;
-
   if (db.connection) {
     return callback(null, db);
   }
 
-  options.useUnifiedTopology = true;
   mongoose.Promise = global.Promise;
-  mongoose
-    .connect(CONNECTION_URI, options)
-    .then(function () {
-      db.connection = mongoose.connection;
-      mongoose.connection.db.admin().command(
-        {
-          buildInfo: 1,
-        },
-        function (err: any, info: any) {
-          if (err) LoggerService.warn(err.message);
-          LoggerService.info(
-            "database is connected. version is : " + info.version
-          );
-
-          db.version = info.version;
-          return callback(null, db);
-        }
-      );
-    })
-    .catch(function (e: any) {
-      LoggerService.error(
-        "Oh no, something went wrong with DB! - " + e.message
-      );
-      db.connection = null;
-
-      return callback(e, null);
+  try {
+    await mongoose.connect(CONNECTION_URI, options);
+    db.connection = mongoose.connection;
+    await mongoose.connection.db.admin().command({
+      buildInfo: 1,
     });
+
+    LoggerService.info("database is connected. ");
+  } catch (e: any) {
+    LoggerService.error("Oh no, something went wrong with DB! - " + e.message);
+    db.connection = null;
+
+    return callback(e, null);
+  }
 };
 
-module.exports.db = db;
-module.exports.connectionuri = CONNECTION_URI;
+export default init;
