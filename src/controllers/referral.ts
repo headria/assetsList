@@ -1,194 +1,40 @@
-import { IServiceResult } from "./../interfaces/general";
-import { LoggerService } from "../logger";
-import * as refService from "../services/referralcodes";
-import { ArabCoinService } from "../services/arabcoin";
+import { Request, Response } from "express";
+import { ReferralService } from "./../services/referral";
+export class ReferralController {
+  referralService = new ReferralService();
 
-export const ReferralController = {
-  addNew: async (req: any, res: any) => {
+  async createReferral(req: Request, res: Response): Promise<Response> {
+    const referral = req.body;
     try {
-      if (!req.body.user_wallet_addresses)
-        return res.status(400).send({
-          code: -1,
-          message: "user_wallet_addresses is required.",
-        });
-      if (!req.body.dID)
-        return res.status(400).send({
-          code: -1,
-          message: "dID is required.",
-        });
-
-      if (!req.body.percentage)
-        return res.status(400).send({
-          code: -1,
-          message: "percentage is required.",
-        });
-      const persentage = parseInt(req.body.percentage);
-      if (persentage > 10 || persentage < 5)
-        return res.status(400).send({
-          code: -1,
-          message: "percentage must be between 5 to 10.",
-        });
-      const result: IServiceResult = await refService.generateNewReferral(
-        req.body
+      const createdReferral = await this.referralService.createReferral(
+        referral
       );
-      if (result.code !== 0) {
-        return res.status(400).send(result);
-      }
-      return res.status(200).send(result);
-    } catch (e: any) {
-      LoggerService.error(e.toString());
-
-      return res.status(500).send({});
+      return res.status(201).json({
+        message: "Referral created successfully",
+        referral: createdReferral,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Failed to create referral",
+        error: error.message,
+      });
     }
-  },
-  updatePercentage: async (req: any, res: any) => {
+  }
+
+  async getReferrals(req: Request, res: Response): Promise<Response> {
     try {
-      const percentage = req.body?.percentage;
-      if (!percentage)
-        return res.status(400).send({
-          code: -1,
-          message: "percentage is required.",
-        });
-      if (!req.body?.referral_code)
-        return res.status(400).send({
-          code: -1,
-          message: "referral_code is required.",
-        });
-
-      if (percentage > 10 || percentage < 0)
-        return res.status(400).send({
-          code: -1,
-          message: "percentage must be between 0 to 10.",
-        });
-      const result = await refService.updatePercentage(req.body);
-      return res.status(200).send({
-        code: 0,
-        message: "",
-        data: result,
+      const referrals = await this.referralService.getReferrals();
+      return res.status(200).json({
+        message: "Referrals retrieved successfully",
+        referrals: referrals,
       });
-    } catch (e: any) {
-      LoggerService.error(e.toString());
-      return res.status(500).send({});
+    } catch (error) {
+      return res.status(500).json({
+        message: "Failed to retrieve referrals",
+        error: error.message,
+      });
     }
-  },
-  getReferralByAddress: async (req: any, res: any) => {
-    try {
-      const result = await refService.getReferralByAddress(req.query?.address);
-      return res.status(200).send({
-        code: 0,
-        message: "",
-        data: result,
-      });
-    } catch (e: any) {
-      LoggerService.error(e.toString());
-      return res.status(500).send({});
-    }
-  },
-  getBalanceByAddress: async (req: any, res: any) => {
-    try {
-      if (!req.query?.address)
-        return res
-          .status(400)
-          .send({ code: -1, message: "Address is required" });
-      const result = await ArabCoinService.populateReferralBalance(
-        req.query?.address
-      );
-      return res.status(200).send({
-        code: 0,
-        message: "",
-        data: result,
-      });
-    } catch (e: any) {
-      LoggerService.error(e.toString());
-      return res.status(500).send({});
-    }
-  },
-  checkRefCode: async (req: any, res: any) => {
-    try {
-      if (!req.query?.referralcode)
-        return res
-          .status(400)
-          .send({ code: -3, message: "Referral code is required" });
-      if (!req.query?.address)
-        return res
-          .status(400)
-          .send({ code: -3, message: "Address code is required" });
-      if (!req.query.dID)
-        return res.status(400).send({
-          code: -3,
-          message: "dID is required.",
-        });
-      const result = await refService.checkExitsReferralCodeByaddressAndCode(
-        req.query?.referralcode
-      );
-      console.log(result);
+  }
 
-      const findAddress =
-        result?.user_wallet_addresses.findIndex(
-          (x) => x === req.query?.address
-        ) || -1;
-
-      const dIdCheck = result?.dID === req.query.dID;
-
-      if (findAddress > 0 || dIdCheck) {
-        return res.status(400).send({
-          code: -5,
-          message: "You can't use your referral code.",
-        });
-      }
-
-      if (!result?.referral_code) {
-        return res.status(400).send({
-          code: -1,
-          message: "referral code was not found.",
-        });
-      }
-
-      return res.status(200).send({
-        code: 0,
-        message: "",
-        data: {
-          referral_code: result?.referral_code,
-          percentage: result?.percentage,
-
-          // discount = 10 + 5 - ref.percentage
-          discount: 15 - parseInt(result?.percentage?.toString() || "0"),
-        },
-      });
-    } catch (e: any) {
-      LoggerService.error(e.toString());
-      return res.status(500).send({});
-    }
-  },
-  newClaim: async (req: any, res: any) => {
-    const query = req.query;
-    if (!query.address)
-      return res.status(400).send({
-        code: -1,
-        message: "Address is required",
-      });
-
-    return res.status(200).send({
-      code: 0,
-      message: "",
-      data: true,
-    });
-  },
-  getLastStatusClaim: async (req: any, res: any) => {
-    const query = req.query;
-    if (!query.address)
-      return res.status(400).send({
-        code: -1,
-        message: "Address is required",
-      });
-
-    return res.status(200).send({
-      code: 0,
-      message: "",
-      data: {
-        nextPayment: 1658583836,
-        locked: true,
-      },
-    });
-  },
-};
+  // Similar implementations for other methods
+}

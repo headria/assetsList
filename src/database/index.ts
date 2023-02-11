@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import { LoggerService } from "../logger";
-
-dotenv.config();
 
 export let db: any = {};
 
@@ -69,7 +66,7 @@ const init = async (callback?: any, connectionString?: string, opts?: any) => {
   if (opts) options = opts;
   options.dbName = mongoConnectionUri.database;
   if (db.connection) {
-    return callback(null, db);
+    return callback(null, db.connection);
   }
 
   mongoose.Promise = global.Promise;
@@ -81,6 +78,7 @@ const init = async (callback?: any, connectionString?: string, opts?: any) => {
     });
 
     LoggerService.info("database is connected. ");
+    return callback(null, db.connection);
   } catch (e: any) {
     LoggerService.error("Oh no, something went wrong with DB! - " + e.message);
     db.connection = null;

@@ -8,5 +8,6 @@ export * from "./arabcoin";
 export * from "./addresses";
 export * from "./devices";
 export * from "./assets";
+export * from "./referral";
 
 export * from "./referralcodes";

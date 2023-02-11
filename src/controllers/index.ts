@@ -9,6 +9,6 @@ export * from "./notifications";
 export * from "./arabcoin";
 export * from "./testController";
 export * from "./settings";
-export * from "./referral";
+export * from "./referralcode";
 export * from "./videoHelper";
 export * from "./assets";
